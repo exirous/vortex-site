@@ -15,7 +15,7 @@
             <img width="30px" height="30px" src="http://eu.battle.net/static-render/eu/<?php echo $data->author->mainCharacter->thumbnail?>" ></img>
         </div>
         <div class="post-author left"><span class="<?php echo $data->author->mainCharacter->warcraftClass->english_name;?>"><?php echo $data->author->mainCharacter->name; ?><span></div>        
-        <div class="post-date left"><?php echo $data->post_date; ?></div>
+        <div class="post-date left"><?php echo Yii::app()->dateFormatter->formatDateTime($data->post_date, 'full', null); ?></div>
     
         <?php if($data->commentCount>0) { ?>
         <div class="post-comment-count left">

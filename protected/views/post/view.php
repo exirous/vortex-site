@@ -15,7 +15,7 @@
             <img width="30px" height="30px" src="http://eu.battle.net/static-render/eu/<?php echo $model->author->mainCharacter->thumbnail?>" ></img>
         </div>
         <div class="post-author left"><span class="<?php echo $model->author->mainCharacter->warcraftClass->english_name;?>"><?php echo $model->author->mainCharacter->name; ?><span></div>        
-        <div class="post-date left"><?php echo $model->post_date; ?></div>
+        <div class="post-date left"><?php echo Yii::app()->dateFormatter->formatDateTime($model->post_date, 'full', null); ?></div>
         <div class="post-actions right">
             <?php if (Yii::app()->user->isProfileId($model->author_id)) {
                 echo CHtml::link('Редактировать', array('post/update', 'id'=>$model->id), array('class' => 'btn btn-primary'));
