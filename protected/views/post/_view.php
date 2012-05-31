@@ -23,7 +23,7 @@
         </div>
         <?php endif; ?>
         <div class="post-actions right">
-            <?php if (isset(Yii::app()->user->profile_id) && ($data->author_id == Yii::app()->user->profile_id)) {
+            <?php if (Yii::app()->user->isProfileId($data->author_id)) {
                 echo CHtml::link('Редактировать', array('post/update', 'id'=>$data->id), array('class' => 'btn btn-primary'));
                 echo '&nbsp';
                 echo CHtml::link('Удалить', '#', array('submit'=>array('delete','id'=>$data->id), 'confirm'=>'Вы уверены, что хотите удалить данную запись?', 'class' => 'btn btn-danger'));

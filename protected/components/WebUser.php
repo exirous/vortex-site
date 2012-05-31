@@ -4,7 +4,6 @@ class WebUser extends CWebUser {
  
     function getRole() {
         if($user = $this->getModel()){
-            // в таблице User есть поле role
             return $user->role;
         }
     }
@@ -16,12 +15,8 @@ class WebUser extends CWebUser {
         return $this->_model;
     }
 
-    public function getId() {
-        if (isset($this->profile_id)) {
-            return $this->profile_id;
-        } else {
-            return false;
-        }
+    public function isProfileId($profile_id) {
+        return (isset($this->profile_id) && ($this->profile_id == $profile_id));
     }
 }
 ?>

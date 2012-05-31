@@ -17,7 +17,7 @@
         <div class="post-author left"><span class="<?php echo $model->author->mainCharacter->warcraftClass->english_name;?>"><?php echo $model->author->mainCharacter->name; ?><span></div>        
         <div class="post-date left"><?php echo $model->post_date; ?></div>
         <div class="post-actions right">
-            <?php if ($model->author_id == Yii::app()->user->profile_id) {
+            <?php if (Yii::app()->user->isProfileId($model->author_id)) {
                 echo CHtml::link('Редактировать', array('post/update', 'id'=>$model->id), array('class' => 'btn btn-primary'));
                 echo '&nbsp';
                 echo CHtml::link('Удалить', '#', array('submit'=>array('delete','id'=>$model->id), 'confirm'=>'Вы уверены, что хотите удалить данную запись?', 'class' => 'btn btn-danger'));
