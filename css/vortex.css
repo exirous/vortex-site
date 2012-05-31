@@ -1,0 +1,92 @@
+
+#header {
+	background: url('/images/logo.jpg') no-repeat;
+	height: 200px;
+	margin: 20px 0px 20px 0px;
+}
+#footer {
+	margin-top:25px;
+	text-align:center;
+}
+
+.post-text {
+	text-indent: 2em;
+	text-align: justify;
+}
+.post-image {
+	text-align:center;
+}
+
+.post-info {
+	margin-top:10px;
+	margin-bottom:15px;
+}
+.post-author, .post-date, .post-comment-count {
+	margin-left: 10px;
+	margin-top: 7px;
+}
+
+.post .post-actions {
+	display: none;
+}
+
+.post:hover .post-actions {
+	display: block;
+}
+
+.comment-author, .comment-date {
+	margin-left: 10px;
+	margin-top: 7px;
+}
+
+.comment-text {
+	margin-top:5px;
+}
+
+.comment {
+	margin-bottom: 15px;
+}
+
+.right {
+	float: right;
+}
+
+.left{
+	float: left;
+}
+
+.clear {
+	clear: both;
+}
+
+.warrior {
+    color: #993300;
+}
+
+.paladin {
+    color: #c38ab7;
+}
+.deathknight {
+    color: #c11d39;
+}
+.hunter {
+    color: #96b545;
+}
+.shaman {
+    color: #2257fc;
+}
+.druid {
+    color: #fc7a09;    
+}
+.rogue {
+    color: #fcf166;    
+}
+.mage {
+    color: #57c6e4;    
+}
+.priest {
+    color: #ede8dd;    
+}
+.warlock {
+    color: #837da1;    
+}
