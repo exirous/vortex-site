@@ -16,13 +16,14 @@
         </div>
         <div class="post-author left"><span class="<?php echo $data->author->mainCharacter->warcraftClass->english_name;?>"><?php echo $data->author->mainCharacter->name; ?><span></div>        
         <div class="post-date left"><?php echo $data->post_date; ?></div>
+        
         <?php if($data->commentCount>=1): ?>
         <div class="post-comment-count left">
             <?php echo CHtml::link('Комментарии: ' . $data->commentCount, array('post/view', 'id'=>$data->id, '#'=>'comments')); ?>
         </div>
         <?php endif; ?>        
         <div class="post-actions right">
-            <?php if ($data->author_id == Yii::app()->user->profile_id) {
+            <?php if (isset(Yii::app()->user->profile_id) && ($data->author_id == Yii::app()->user->profile_id)) {
                 echo CHtml::link('Редактировать', array('post/update', 'id'=>$data->id), array('class' => 'btn btn-primary'));
                 echo '&nbsp';
                 echo CHtml::link('Удалить', '#', array('submit'=>array('delete','id'=>$data->id), 'confirm'=>'Вы уверены, что хотите удалить данную запись?', 'class' => 'btn btn-danger'));
