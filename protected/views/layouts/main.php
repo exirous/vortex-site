@@ -29,7 +29,7 @@
 						'class'=>'nav',
 					),
 					'items'=>array(
-						array('label'=>'Главная', 'url'=>array('/site/index')),
+						array('label'=>'Главная', 'url'=>array('/')),
 						array('label'=>'Форум', 'url'=>'http://forum.vortex-guild.org/index.php'),
 						array('label'=>'Логи', 'url'=>'http://worldoflogs.com/guilds/99057/'),
 						array('label'=>'Прогресс', 'url'=>'http://wowprogress.com/guild/eu/Черный-Шрам/Вортекс/rating.tier13_25'),
