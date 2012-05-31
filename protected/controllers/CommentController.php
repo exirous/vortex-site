@@ -33,10 +33,10 @@ class CommentController extends Controller
 			$comment = $this->loadModel($id);
 			$post_id = $comment->post_id;
 
-			if (Yii::app()->user->isProfileId($comment->author_id)) {
+			if (Yii::app()->user->isProfileId($comment->author_id) || Yii::app()->user->checkAccess('administrator')) {
 				$comment->delete();
 			} else {
-            	Yii::app()->user->setFlash('error', "Нельзя удалить чужой комментарий");				
+            	Yii::app()->user->setFlash('error', "У вас нет прав для удаления комментария");				
 			}
 
 			if(!isset($_GET['ajax']))
