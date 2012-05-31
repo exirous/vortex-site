@@ -29,9 +29,20 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		$dataProvider=new CActiveDataProvider('Post', array(
+			'criteria'=>array(
+		        'condition'=>'blog_id=1',
+		        'order'=>'post_date DESC',
+		        'with'=>'author'
+		    ),
+			'pagination'=>array(
+            	'pageSize'=>5,
+        	),
+		));
+
+        $this->render('index', array(
+			'dataProvider'=>$dataProvider,	
+		));
 	}
 
 	public function actionTeamSpeakMaintance()
