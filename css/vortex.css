@@ -26,11 +26,11 @@
 	margin-top: 7px;
 }
 
-.post .post-actions {
+.post .post-actions, .comment .comment-actions {
 	display: none;
 }
 
-.post:hover .post-actions {
+.post:hover .post-actions, .comment:hover .comment-actions {
 	display: block;
 }
 

@@ -21,7 +21,7 @@ class PostController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow',
-				'actions'=>array('create','update', 'index','dirty'),
+				'actions'=>array('create','update', 'index'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions

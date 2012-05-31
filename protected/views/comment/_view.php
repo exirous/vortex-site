@@ -5,6 +5,11 @@
         </div>
         <div class="comment-author left"><span class="<?php echo $data->author->mainCharacter->warcraftClass->english_name;?>"><?php echo $data->author->mainCharacter->name; ?><span></div>        
         <div class="comment-date left"><?php echo $data->created; ?></div>
+        <div class="comment-actions right">
+            <?php if (Yii::app()->user->isProfileId($data->author_id)) {
+                echo CHtml::link('Удалить', '#', array('submit'=>array('comment/delete','id'=>$data->id), 'confirm'=>'Вы уверены, что хотите удалить комментарий?', 'class' => 'btn btn-danger'));
+            } ?>
+        </div>        
         <div class="clear"></div>
     </div>
   
