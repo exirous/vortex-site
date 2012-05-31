@@ -20,8 +20,7 @@
 <body>
 	
 <div class="container">
-	<div id="header" class="header">
-	</div>
+	<a href="/"><div id="header" class="header"></div></a>
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div id="navbar-inner">
