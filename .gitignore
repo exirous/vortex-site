@@ -33,9 +33,9 @@ nbproject
 .svn
 .CVS
 .idea
-media
-forum
-kills
+media/
+forum/
+kills/
 assets/
 protected/runtime/
 protected/config/
