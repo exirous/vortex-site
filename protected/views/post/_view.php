@@ -17,11 +17,15 @@
         <div class="post-author left"><span class="<?php echo $data->author->mainCharacter->warcraftClass->english_name;?>"><?php echo $data->author->mainCharacter->name; ?><span></div>        
         <div class="post-date left"><?php echo $data->post_date; ?></div>
     
-        <?php if($data->commentCount>=1): ?>
+        <?php if($data->commentCount>0) { ?>
         <div class="post-comment-count left">
             <?php echo CHtml::link('Комментарии: ' . $data->commentCount, array('post/view', 'id'=>$data->id, '#'=>'comments')); ?>
         </div>
-        <?php endif; ?>
+        <?php } else {?>
+        <div class="post-comment-count left">
+            <?php echo CHtml::link('Комментировать', array('post/view', 'id'=>$data->id, '#'=>'comments')); ?>
+        </div>
+        <?php } ?>
         <div class="post-actions right">
             <?php if (Yii::app()->user->isProfileId($data->author_id)) {
                 echo CHtml::link('Редактировать', array('post/update', 'id'=>$data->id), array('class' => 'btn btn-primary'));
