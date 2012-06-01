@@ -17,9 +17,10 @@ class ProfileController extends Controller
 		} else {
 			$profile_id = Yii::app()->user->getState('profile_id');
 			$profile = Profile::model()->findByPk($profile_id);
-			
-			foreach ($profile->characters as $character) {
-				$character->generateTs3Tokens();
+			if (Yii::app()->ts3->ts3Server) {
+				foreach ($profile->characters as $character) {
+					$character->generateTs3Tokens();
+				}
 			}
 
 			$this->render('view', array(

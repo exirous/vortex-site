@@ -1,5 +1,10 @@
-<div class="post">
+<?php
+$this->breadcrumbs=array(
+    CHtml::encode($model->title),
+);
+?>
 
+<div class="post">
     <h2>
         <?php echo CHtml::link(CHtml::encode($model->title), array('post/view', 'id'=>$model->id)); ?>
     </h2>  
