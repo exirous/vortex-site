@@ -48,11 +48,12 @@ $this->breadcrumbs=array(
         'itemView'=>'/comment/_view',   
         'template'=>"{items}",
     )); ?>
-
+    <?php if (Yii::app()->user->id) { ?>
     <h3>Оставить комментарий</h3>
  
     <?php $this->renderPartial('/comment/_form', array(
         'model'=>$comment,
     )); ?>
+    <?php } ?>
  
 </div> 
