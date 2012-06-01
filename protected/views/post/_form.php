@@ -45,11 +45,14 @@
 	<?php if(!$model->isNewRecord) { ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'post_image'); ?>
-		<?php if ($model->post_image) {?>    
-			<div class="post_image">
-    	    	<img src="<?php echo $model->post_image; ?>"/>
-	        </div>
-		<?php } ?>		
+		<?php if ($model->post_thumbnail) {?>   
+			<a href="<?php echo $model->post_image; ?>" rel="lightbox" title="<?php echo $model->title; ?>">
+				<div class="post_image">
+    	    		<img src="<?php echo $model->post_thumbnail; ?>"/>
+	        	</div>					
+			</a>
+		<?php } ?>
+
 		<?php echo $form->fileField($model,'post_image'); ?>
 		<?php echo $form->error($model,'post_image'); ?>
 	</div>	

@@ -43,12 +43,14 @@ class PostController extends Controller
 			$model->attributes=$_POST['Post'];
 			$model->post_image=CUploadedFile::getInstance($model,'post_image');
 			if ($model->post_image) {
-				$image_file = Yii::app()->basePath.'/../media/post/'.$model->id.'.'.$model->post_image->getExtensionName();
+				$extensionName = $model->post_image->getExtensionName();
+				$image_file = Yii::app()->basePath.'/../media/post/'.$model->id.'.'.$extensionName;
 				$model->post_image->saveAs($image_file);
 				$img = Yii::app()->simpleImage->load($image_file);
-				$img->resizeToWidth(600);
-				$img->save(Yii::app()->basePath.'/../media/post/thumbnail/'.$model->id.'.'.$model->post_image->getExtensionName());
-				$model->post_image='/media/post/'.$model->id.'.'.$model->post_image->getExtensionName();
+				$img->resizeToWidth(450);
+				$img->save(Yii::app()->basePath.'/../media/post/thumbnail/'.$model->id.'.'.$extensionName);
+				$model->post_image='/media/post/'.$model->id.'.'.$extensionName;
+				$model->post_thumbnail='/media/post/thumbnail/'.$model->id.'.'.$extensionName;
 			}
 
 			if($model->save())
@@ -73,12 +75,14 @@ class PostController extends Controller
 			$model->attributes=$_POST['Post'];
 			$model->post_image=CUploadedFile::getInstance($model,'post_image');
 			if ($model->post_image) {
-				$image_file = Yii::app()->basePath.'/../media/post/'.$model->id.'.'.$model->post_image->getExtensionName();
+				$extensionName = $model->post_image->getExtensionName();
+				$image_file = Yii::app()->basePath.'/../media/post/'.$model->id.'.'.$extensionName;
 				$model->post_image->saveAs($image_file);
 				$img = Yii::app()->simpleImage->load($image_file);
-				$img->resizeToWidth(600);
-				$img->save(Yii::app()->basePath.'/../media/post/thumbnail/'.$model->id.'.'.$model->post_image->getExtensionName());
-				$model->post_image='/media/post/'.$model->id.'.'.$model->post_image->getExtensionName();
+				$img->resizeToWidth(450);
+				$img->save(Yii::app()->basePath.'/../media/post/thumbnail/'.$model->id.'.'.$extensionName);
+				$model->post_image='/media/post/'.$model->id.'.'.$extensionName;
+				$model->post_thumbnail='/media/post/thumbnail/'.$model->id.'.'.$extensionName;				
 			} else {
 				$model->post_image = $old_image;
 			}

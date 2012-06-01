@@ -6,12 +6,15 @@
 
 	<link rel="stylesheet/less" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/less/bootstrap.less">
 	<link rel="stylesheet/less" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/less/responsive.less">
-	<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/vortex.css">
+	<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/lightbox.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/redactor/css/redactor.css">
+	<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/vortex.css">
+	
 
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/jquery.min.js"></script>
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/less-1.3.0.min.js"></script>
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/redactor/redactor.js"></script>
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/lightbox.js"></script>	
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/app.js"></script>
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>

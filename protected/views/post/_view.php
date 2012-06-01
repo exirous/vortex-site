@@ -5,7 +5,13 @@
     </h2>  
 
     <div class="post-text"><?php echo MyHtml::myFormatText($data->text); ?></div>
-    <?php if ($data->post_image) {?>    
+    <?php if ($data->post_thumbnail) {?>   
+        <a href="<?php echo $data->post_image; ?>" rel="lightbox" title="<?php echo $data->title; ?>">
+            <div class="post-image">
+                <img src="<?php echo $data->post_thumbnail; ?>"/>
+            </div>                  
+        </a>
+    <?php } elseif ($data->post_image) {?>    
         <div class="post-image">
             <img src="<?php echo $data->post_image; ?>"/>
         </div>
