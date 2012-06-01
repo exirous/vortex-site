@@ -52,7 +52,7 @@ class PostController extends Controller
 			}
 
 			if($model->save())
-				$this->redirect(array('dirty'));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('create',array(
@@ -83,7 +83,7 @@ class PostController extends Controller
 				$model->post_image = $old_image;
 			}
 			if($model->save())
-				$this->redirect(array('dirty'));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('update',array(
