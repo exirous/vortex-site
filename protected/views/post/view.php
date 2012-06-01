@@ -4,7 +4,7 @@
         <?php echo CHtml::link(CHtml::encode($model->title), array('post/view', 'id'=>$model->id)); ?>
     </h2>  
 
-    <div class="post-text"><?php echo $model->text ?></div>
+    <div class="post-text"><?php echo MyHtml::myFormatText($model->text); ?></div>
     <?php if ($model->post_image) {?>    
         <div class="post-image">
             <img src="<?php echo $model->post_image; ?>"/>

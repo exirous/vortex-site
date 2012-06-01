@@ -4,7 +4,7 @@
         <?php echo CHtml::link(CHtml::encode($data->title), array('post/view', 'id'=>$data->id)); ?>
     </h2>  
 
-    <div class="post-text"><?php echo $data->text ?></div>
+    <div class="post-text"><?php echo MyHtml::myFormatText($data->text); ?></div>
     <?php if ($data->post_image) {?>    
         <div class="post-image">
             <img src="<?php echo $data->post_image; ?>"/>

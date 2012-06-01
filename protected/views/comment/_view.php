@@ -13,5 +13,5 @@
         <div class="clear"></div>
     </div>
   
-    <div class="comment-text"><?php echo $data->text ?></div>
+    <div class="comment-text"><?php echo MyHtml::myFormatText($data->text); ?></div>
 </div>
