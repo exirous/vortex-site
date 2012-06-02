@@ -30,8 +30,22 @@ class BlogController extends Controller
 
 	public function actionView($id)
 	{
+		$model = $this->loadModel($id);
+
+		$dataProvider = new CActiveDataProvider('Post', array(
+			'criteria'=>array(
+		        'condition'=>'blog_id='.$id,
+		        'order'=>'post_date DESC',
+		        'with'=>'author'
+		    ),
+			'pagination'=>array(
+            	'pageSize'=>5,
+        	),
+		));
+
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model' => $model,
+			'dataProvider' => $dataProvider,
 		));
 	}
 
