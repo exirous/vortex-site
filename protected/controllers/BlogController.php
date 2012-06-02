@@ -35,7 +35,7 @@ class BlogController extends Controller
 		$dataProvider = new CActiveDataProvider('Post', array(
 			'criteria'=>array(
 		        'condition'=>'blog_id='.$id,
-		        'order'=>'post_date DESC, created DESC',
+		        'order'=>'post_date DESC, t.created DESC',
 		        'with'=>'author'
 		    ),
 			'pagination'=>array(
