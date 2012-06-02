@@ -5,10 +5,10 @@ class SiteTest extends WebTestCase
 	public function testIndex()
 	{
 		$this->open('');
-		$this->assertTextPresent('Welcome');
+		$this->assertTextPresent('Авторизация');
 	}
 
-	public function testContact()
+/*	public function testContact()
 	{
 		$this->open('?r=site/contact');
 		$this->assertTextPresent('Contact Us');
@@ -19,9 +19,9 @@ class SiteTest extends WebTestCase
 		$this->type('name=ContactForm[subject]','test subject');
 		$this->click("//input[@value='Submit']");
 		$this->waitForTextPresent('Body cannot be blank.');
-	}
+	}*/
 
-	public function testLoginLogout()
+/*	public function testLoginLogout()
 	{
 		// $this->open('');
 		// // ensure the user is logged out
@@ -43,5 +43,5 @@ class SiteTest extends WebTestCase
 		// $this->assertTextNotPresent('Login');
 		// $this->clickAndWait('link=Logout (demo)');
 		// $this->assertTextPresent('Login');
-	}
+	}*/
 }

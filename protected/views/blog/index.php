@@ -1,19 +1,13 @@
 <?php
 $this->breadcrumbs=array(
-	'Blogs',
-);
-
-$this->menu=array(
-	array('label'=>'Список блогов', 'url'=>array('create')),
-	array('label'=>'Управление блогом', 'url'=>array('admin')),
+	'Блоги',
 );
 ?>
 
-<h2>Blogs</h2>
+<h2>Блоги <?php echo CHtml::link("Создать блог", array('blog/create'), array('class' => 'btn btn-primary right')); ?></h2>
 
-<div class='box_content'>
-	<?php $this->widget('zii.widgets.CListView', array(
-		'dataProvider'=>$dataProvider,
-		'itemView'=>'_view',
-	)); ?>
-</div>
+<?php $this->widget('zii.widgets.CListView', array(
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_view',
+	'template'=>"{items}",
+)); ?>

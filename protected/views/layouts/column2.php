@@ -19,14 +19,13 @@
 		$this->operationMenu[] = array('label'=>'Список профилей', 'url'=>array('profile/list'));
 ?>
 	<div class="box">
-		<h2>Операции</h2>
+		<h2>Администрирование</h2>
 		<div class="box_content">
 		<?php
 			$this->beginWidget('zii.widgets.CPortlet', array(
 			));
 			$this->widget('zii.widgets.CMenu', array(
 				'items'=>$this->operationMenu,
-				'htmlOptions'=>array('class'=>'operations'),
 			));
 			$this->endWidget();
 		?>
@@ -35,6 +34,23 @@
 <?php
     }
 ?>
+
+<?php 
+	$this->blogMenu[] = array('label'=>'Список блогов', 'url'=>array('blog/index'));
+?>
+	<div class="box">
+		<h2>Статьи</h2>
+		<div class="box_content">
+		<?php
+			$this->beginWidget('zii.widgets.CPortlet', array(
+			));
+			$this->widget('zii.widgets.CMenu', array(
+				'items'=>$this->blogMenu,
+			));
+			$this->endWidget();
+		?>
+		</div>
+	</div>
 
 	<?php if (!Yii::app()->user->isGuest) {?>
 	<?php 
@@ -49,7 +65,6 @@
 			));
 			$this->widget('zii.widgets.CMenu', array(
 				'items'=>$this->profileMenu,
-				'htmlOptions'=>array('class'=>'operations'),
 			));
 			$this->endWidget();
 		?>
