@@ -43,6 +43,11 @@ class BlogController extends Controller
         	),
 		));
 
+		if(!Yii::app()->user->checkAccess('member') && !$model->is_public) {
+			$dataProvider = null;
+		}
+
+
 		$this->render('view',array(
 			'model' => $model,
 			'dataProvider' => $dataProvider,

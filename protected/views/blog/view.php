@@ -11,8 +11,15 @@ if (Yii::app()->user->checkAccess('administrator') || Yii::app()->user->isProfil
 }
 ?>
 
-<?php $this->widget('zii.widgets.CListView', array(
-    'dataProvider'=>$dataProvider,
-    'itemView'=>'/post/_view',
-    'template'=>"{items}\n{pager}",
-)); ?>
+<?php 
+if ($dataProvider) {
+	$this->widget('zii.widgets.CListView', array(
+    	'dataProvider'=>$dataProvider,
+    	'itemView'=>'/post/_view',
+    	'template'=>"{items}\n{pager}",
+	)); 
+} else {
+	echo 'Данный блог вам недоступен';
+}
+
+?>

@@ -29,16 +29,29 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Post', array(
-			'criteria'=>array(
-		        'condition'=>'blog_id=1',
-		        'order'=>'post_date DESC',
-		        'with'=>'author'
-		    ),
-			'pagination'=>array(
-            	'pageSize'=>5,
-        	),
-		));
+		if(Yii::app()->user->checkAccess('member')) {
+			$dataProvider=new CActiveDataProvider('Post', array(
+				'criteria'=>array(
+			        'condition'=>'blog_id <> 0',
+			        'order'=>'post_date DESC',
+			        'with'=>array('author', 'blog')
+			    ),
+				'pagination'=>array(
+	            	'pageSize'=>5,
+	        	),
+			));
+		} else {
+			$dataProvider=new CActiveDataProvider('Post', array(
+				'criteria'=>array(
+			        'condition'=>'blog.is_public = 1',
+			        'order'=>'post_date DESC',
+			        'with'=>array('author', 'blog')
+			    ),
+				'pagination'=>array(
+	            	'pageSize'=>5,
+	        	),
+			));			
+		}
 
         $this->render('index', array(
 			'dataProvider'=>$dataProvider,	

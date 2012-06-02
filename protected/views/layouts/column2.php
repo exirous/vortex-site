@@ -55,7 +55,6 @@
 	<?php if (!Yii::app()->user->isGuest) {?>
 	<?php 
 		$this->profileMenu[] = array('label'=>'Профиль', 'url'=>array('profile/view'));
-		$this->profileMenu[] = array('label'=>'Мои статьи', 'url'=>array('post/index'));
 	?>	
 	<div class="box">
 		<h2>Профиль</h2>
