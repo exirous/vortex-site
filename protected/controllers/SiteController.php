@@ -33,7 +33,7 @@ class SiteController extends Controller
 			$dataProvider=new CActiveDataProvider('Post', array(
 				'criteria'=>array(
 			        'condition'=>'blog_id <> 0',
-			        'order'=>'post_date DESC',
+			        'order'=>'post_date DESC, created DESC',
 			        'with'=>array('author', 'blog')
 			    ),
 				'pagination'=>array(
@@ -44,7 +44,7 @@ class SiteController extends Controller
 			$dataProvider=new CActiveDataProvider('Post', array(
 				'criteria'=>array(
 			        'condition'=>'blog.is_public = 1',
-			        'order'=>'post_date DESC',
+			        'order'=>'post_date DESC, created DESC',
 			        'with'=>array('author', 'blog')
 			    ),
 				'pagination'=>array(

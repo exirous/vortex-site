@@ -1,15 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "blogs".
- *
- * The followings are the available columns in table 'blogs':
- * @property string $id
- * @property string $title
- * @property integer $owner_id
- * @property string $created
- * @property string $updated
- */
 class Blog extends CActiveRecord
 {
 
