@@ -4,7 +4,11 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h2>Блоги <?php echo CHtml::link("Создать блог", array('blog/create'), array('class' => 'btn btn-primary right')); ?></h2>
+<h2>Блоги <?php 
+if (Yii::app()->user->checkAccess('raider')) {
+	echo CHtml::link("Создать блог", array('blog/create'), array('class' => 'btn btn-primary right')); 
+}
+?></h2>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

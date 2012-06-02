@@ -1,24 +1,22 @@
-<div class="form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php $form=$this->beginWidget('MyActiveForm', array(
 	'id'=>'blog-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
-
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'title'); ?>
-		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>200)); ?>
-		<?php echo $form->error($model,'title'); ?>
-	</div>
+    <?php $input = $form->textField($model, 'title', array('size'=>60,'maxlength'=>200)); 
+  	echo $form->inputWithLabelAndError($model, 'title', $input); ?>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
-	</div>
+		
+  	<?php 
+  	if(Yii::app()->user->checkAccess('administrator')) {
+  		$input = $form->checkBox($model, 'is_public');
+  		echo $form->inputWithLabelAndError($model, 'is_public', $input);
+  	}
+  	?>
+
+ 	<?php echo CHtml::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', array('class' => 'btn btn-primary')); ?>
 
 <?php $this->endWidget(); ?>
-
-</div><!-- form -->

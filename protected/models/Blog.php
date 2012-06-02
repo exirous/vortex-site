@@ -28,6 +28,7 @@ class Blog extends CActiveRecord
 		return array(
 			array('title', 'required'),
 			array('title', 'length', 'max'=>200),
+			array('is_public', 'boolean'),
 			array('id, title, owner_id, created, updated', 'safe', 'on'=>'search'),
 		);
 	}
@@ -44,6 +45,7 @@ class Blog extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'title' => 'Название блога',
+			'is_public' => 'Публичный блог',
 			'owner_id' => 'Владелец блога',
 			'created' => 'Создан',
 			'updated' => 'Обновлен',

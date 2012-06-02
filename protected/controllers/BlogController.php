@@ -19,8 +19,8 @@ class BlogController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array(),
-				'users'=>array('@'),
+				'actions'=>array('create', 'update'),
+				'roles'=>array('raider'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
