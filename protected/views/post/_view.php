@@ -32,7 +32,7 @@
             <?php echo CHtml::link('Комментировать', array('post/view', 'id'=>$data->id, '#'=>'comments')); ?>
         </div>
         <?php } ?>
-        <div class="post-actions right">
+        <div class="actions right">
             <?php if (Yii::app()->user->isProfileId($data->author_id)) {
                 echo CHtml::link('Редактировать', array('post/update', 'id'=>$data->id), array('class' => 'btn btn-primary'));
                 echo '&nbsp';
