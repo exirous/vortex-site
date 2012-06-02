@@ -22,7 +22,7 @@ class PostController extends Controller
 			),
 			array('allow',
 				'actions'=>array('create','update', 'index'),
-				'users'=>array('@'),
+				'roles'=>array('member'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete'),
@@ -34,9 +34,10 @@ class PostController extends Controller
 		);
 	}
 
-	public function actionCreate()
+	public function actionCreate($blog_id = 0)
 	{
-		$model=new Post;
+		$model = new Post;
+		$model->blog_id = $blog_id;
 
 		if(isset($_POST['Post']))
 		{

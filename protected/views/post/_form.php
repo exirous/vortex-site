@@ -1,6 +1,4 @@
-<div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php $form=$this->beginWidget('MyActiveForm', array(
 	'id'=>'post-form',
 	'enableAjaxValidation'=>false,
     'htmlOptions' => array('enctype' => 'multipart/form-data'),
@@ -8,13 +6,10 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'title'); ?>
-		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>200)); ?>
-		<?php echo $form->error($model,'title'); ?>
-	</div>
+    <?php $input = $form->textField($model, 'title', array('size'=>60,'maxlength'=>200)); 
+  	echo $form->inputWithLabelAndError($model, 'title', $input); ?>
 
-	<div class="row">
+	<?php if(!$model->isNewRecord && $model->blog->is_public) { ?>
 		<?php echo $form->labelEx($model,'post_date'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
     		'name'=>'post_date_picker',
@@ -32,18 +27,17 @@
 		));	?>	
 		<?php echo $form->hiddenField($model,'post_date'); ?>
 		<?php echo $form->error($model,'post_date'); ?>
+	<?php } ?>
 
-	</div>	
-
-	<div class="row">
+  	<?php if(Yii::app()->user->checkAccess('administrator')) { ?>
 		<?php echo $form->labelEx($model,'blog_id'); ?>
 		<?php 
 			$blog_list = CHtml::listData(Blog::model()->findAccessableBlogs(), 'id', 'title');
 			echo $form->dropDownList($model,'blog_id', $blog_list, array('empty'=>'Черновики')); ?>
-		<?php echo $form->error($model,'blog_id'); ?>
-	</div>	
+		<?php echo $form->error($model,'blog_id'); ?>	
+	<?php } ?>
+
 	<?php if(!$model->isNewRecord) { ?>
-	<div class="row">
 		<?php echo $form->labelEx($model,'post_image'); ?>
 		<?php if ($model->post_thumbnail) {?>   
 			<a href="<?php echo $model->post_image; ?>" rel="lightbox" title="<?php echo $model->title; ?>">
@@ -55,19 +49,14 @@
 
 		<?php echo $form->fileField($model,'post_image'); ?>
 		<?php echo $form->error($model,'post_image'); ?>
-	</div>	
 	<?php } ?>
+	
+	<fieldset>
+	<?php echo $form->labelEx($model,'text'); ?>
+	<?php echo $form->textArea($model,'text',array('rows'=>20, 'cols'=>50, 'class'=>'redactor')); ?>
+	<?php echo $form->error($model,'text'); ?>
+	</fieldset>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'text'); ?>
-		<?php echo $form->textArea($model,'text',array('rows'=>20, 'cols'=>50, 'class'=>'redactor')); ?>
-		<?php echo $form->error($model,'text'); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить'); ?>
-	</div>
+ 	<?php echo CHtml::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', array('class' => 'btn btn-primary')); ?>
 
 <?php $this->endWidget(); ?>
-
-</div><!-- form -->

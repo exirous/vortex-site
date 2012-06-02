@@ -18,7 +18,8 @@ class Post extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('title, text, post_date', 'required'),
+			array('title, text', 'required'),
+			array('post_date', 'safe'),
 			array('title, post_image', 'length', 'max'=>200),
 			array('blog_id, author_id', 'length', 'max'=>10),
 			array('post_image', 'file', 'types'=>'jpg, gif, png', 'allowEmpty' => true),
@@ -88,11 +89,11 @@ class Post extends CActiveRecord
 	    {
 	        if($this->isNewRecord)
 	        {
-	            $this->created=$this->updated=new CDbExpression('NOW()');
+	            $this->post_date=$this->created=$this->updated=new CDbExpression('NOW()');
 	            $this->author_id=Yii::app()->user->profile_id;
 	        }
 	        else
-	            $this->updated=new CDbExpression('NOW()');
+	            $this->post_date=$this->updated=new CDbExpression('NOW()');
 	        return true;
 	    }
 	    else

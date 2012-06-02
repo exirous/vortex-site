@@ -1,7 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Черновики'=>array('index'),
-	'Создать',
+	'Создать запись',
 );
 
 $this->menu=array(
@@ -10,7 +9,7 @@ $this->menu=array(
 );
 ?>
 <div class="box_content">
-	<h2>Создать черновик</h2>
+	<h2>Создать запись</h2>
 
 	<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
 </div>

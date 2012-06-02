@@ -20,7 +20,7 @@ class BlogController extends Controller
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create', 'update'),
-				'roles'=>array('raider'),
+				'roles'=>array('member'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

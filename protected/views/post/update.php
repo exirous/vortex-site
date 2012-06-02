@@ -1,6 +1,5 @@
 <?php
 $this->breadcrumbs=array(
-	'Черновики'=>array('index'),
 	$model->title,
 );
 
