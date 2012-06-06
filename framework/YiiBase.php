@@ -414,8 +414,10 @@ class YiiBase
 						}
 					}
 				}
-				else
-					include($className.'.php');
+				else {
+                    if(strpos($className, 'PHPUnit') === false && strpos($className, 'Test:') === false)
+					    include($className.'.php');
+                }
 			}
 			else  // class name with namespace in PHP 5.3
 			{
