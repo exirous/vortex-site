@@ -6,9 +6,9 @@ class PhpAuthManager extends CPhpAuthManager{
         }
  
         parent::init();
- 
+
         if(!Yii::app()->user->isGuest){
-            $this->assign(Yii::app()->user->role, Yii::app()->user->profile_id);
+            $this->assign(Yii::app()->user->getRole(), Yii::app()->user->profile_id);
         }
     }
 }

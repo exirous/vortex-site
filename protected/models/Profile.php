@@ -2,6 +2,13 @@
 
 class Profile extends CActiveRecord
 {
+    private $roles = array(
+        'guest' => 0,
+        'authguest' => 10,
+        'member' => 20,
+        'raider' => 30,
+        'administrator' => 40,
+    );
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -62,4 +69,16 @@ class Profile extends CActiveRecord
 		}
 
 	}
+
+    public function getActiveRole()
+    {
+        $current_role = $this->role;
+        foreach ($this->characters as $character) {
+            if ($character->guild_id != Yii::app()->properties->guild_id) continue;
+            $role = $character->rank->role;
+            if ($this->roles[$current_role] < $this->roles[$role]) $current_role = $role;
+        }
+
+        return $current_role;
+    }
 }

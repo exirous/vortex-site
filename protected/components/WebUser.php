@@ -1,18 +1,18 @@
 <?php
 class WebUser extends CWebUser {
-    private $_model = null;
+    private $model = null;
  
     function getRole() {
-        if($user = $this->getModel()){
-            return $user->role;
+        if($profile = $this->getModel()){
+            return $profile->getActiveRole();
         }
     }
  
     private function getModel(){
-        if (!$this->isGuest && $this->_model === null){
-            $this->_model = Profile::model()->findByPk($this->profile_id, array('select' => 'role'));
+        if (!$this->isGuest && $this->model === null){
+            $this->model = Profile::model()->findByPk($this->profile_id);
         }
-        return $this->_model;
+        return $this->model;
     }
 
     // Используется для получения ID записи в таблице профилей.
