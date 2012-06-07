@@ -3,12 +3,12 @@ class WebUser extends CWebUser {
     private $model = null;
  
     function getRole() {
-        if($profile = $this->getModel()){
+        if($profile = $this->getProfile()){
             return $profile->getActiveRole();
         }
     }
  
-    private function getModel(){
+    public function getProfile(){
         if (!$this->isGuest && $this->model === null){
             $this->model = Profile::model()->findByPk($this->profile_id);
         }

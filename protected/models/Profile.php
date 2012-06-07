@@ -81,4 +81,9 @@ class Profile extends CActiveRecord
 
         return $current_role;
     }
+
+    public function getActiveRoleDescription()
+    {
+        return Yii::app()->authManager->getAuthItem($this->getActiveRole())->getDescription();
+    }
 }

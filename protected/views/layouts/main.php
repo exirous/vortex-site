@@ -23,7 +23,24 @@
 <body>
 	
 <div class="container">
-	<a href="/"><div id="header" class="header"></div></a>
+    <?php if (!Yii::app()->user->isGuest) {?>
+    <dl id="profile_info" class="right">
+        <dt>E-mail</dt>
+        <dd><?php echo Yii::app()->user->name; ?></dd>
+        <dt>Персонаж</dt>
+        <dd><?php echo Yii::app()->user->getProfile()->mainCharacter->name; ?></dd>
+        <dt>Ранг</dt>
+        <dd><?php echo Yii::app()->user->getProfile()->mainCharacter->rank->name; ?></dd>
+        <dt>Уровень доступа</dt>
+        <dd> <?php echo Yii::app()->authManager->getAuthItem(Yii::app()->user->getRole())->getDescription(); ?></dd>
+
+    </dl>
+    <?php } ?>
+	<a href="/">
+        <div id="header" class="header">
+
+        </div>
+    </a>
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div id="navbar-inner">

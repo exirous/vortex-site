@@ -1,4 +1,3 @@
-
 #header {
 	background: url('/images/logo450150.jpg') no-repeat;
 	height: 150px;
@@ -7,6 +6,11 @@
 #footer {
 	margin-top:25px;
 	text-align:center;
+}
+
+#profile_info {
+    margin-right: 100px;
+    margin-top: 25px
 }
 
 .post-text {
