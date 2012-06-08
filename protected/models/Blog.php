@@ -66,6 +66,12 @@ class Blog extends CActiveRecord
 		}
 	}
 
+    public function isUserInRole($role) {
+        if ($role == 'owner') {
+            return true;
+        }
+    }
+
 	protected function beforeSave()
 	{
 	    if(parent::beforeSave())
