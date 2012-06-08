@@ -37,6 +37,7 @@
  * @property boolean $isDeleteRequest Whether this is a DELETE request.
  * @property boolean $isPutRequest Whether this is a PUT request.
  * @property boolean $isAjaxRequest Whether this is an AJAX (XMLHttpRequest) request.
+ * @property boolean $isFlashRequest Whether this is an Adobe Flash or Adobe Flex request.
  * @property string $serverName Server name.
  * @property integer $serverPort Server port number.
  * @property string $urlReferrer URL referrer, null if not present.
@@ -53,7 +54,7 @@
  * @property string $csrfToken The random token for CSRF validation.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.web
  * @since 1.0
  */
@@ -191,6 +192,8 @@ class CHttpRequest extends CApplicationComponent
 	 * Returns the named DELETE parameter value.
 	 * If the DELETE parameter does not exist or if the current request is not a DELETE request,
 	 * the second parameter to this method will be returned.
+	 * If the DELETE request was tunneled through POST via _method parameter, the POST parameter
+	 * will be returned instead (available since version 1.1.11).
 	 * @param string $name the DELETE parameter name
 	 * @param mixed $defaultValue the default parameter value if the DELETE parameter does not exist.
 	 * @return mixed the DELETE parameter value
@@ -198,6 +201,9 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getDelete($name,$defaultValue=null)
 	{
+		if($this->getIsDeleteViaPostRequest())
+			return $this->getPost($name, $defaultValue);
+
 		if($this->_deleteParams===null)
 			$this->_deleteParams=$this->getIsDeleteRequest() ? $this->getRestParams() : array();
 		return isset($this->_deleteParams[$name]) ? $this->_deleteParams[$name] : $defaultValue;
@@ -207,6 +213,8 @@ class CHttpRequest extends CApplicationComponent
 	 * Returns the named PUT parameter value.
 	 * If the PUT parameter does not exist or if the current request is not a PUT request,
 	 * the second parameter to this method will be returned.
+	 * If the PUT request was tunneled through POST via _method parameter, the POST parameter
+	 * will be returned instead (available since version 1.1.11).
 	 * @param string $name the PUT parameter name
 	 * @param mixed $defaultValue the default parameter value if the PUT parameter does not exist.
 	 * @return mixed the PUT parameter value
@@ -214,6 +222,9 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getPut($name,$defaultValue=null)
 	{
+		if($this->getIsPutViaPostReqest())
+			return $this->getPost($name, $defaultValue);
+
 		if($this->_putParams===null)
 			$this->_putParams=$this->getIsPutRequest() ? $this->getRestParams() : array();
 		return isset($this->_putParams[$name]) ? $this->_putParams[$name] : $defaultValue;
@@ -383,7 +394,7 @@ class CHttpRequest extends CApplicationComponent
 			if(($pos=strpos($pathInfo,'?'))!==false)
 			   $pathInfo=substr($pathInfo,0,$pos);
 
-			$pathInfo=$this->urldecode($pathInfo);
+			$pathInfo=$this->decodePathInfo($pathInfo);
 
 			$scriptUrl=$this->getScriptUrl();
 			$baseUrl=$this->getBaseUrl();
@@ -402,15 +413,16 @@ class CHttpRequest extends CApplicationComponent
 	}
 
 	/**
-	 * Improved variant of urldecode.
-	 * Properly decodes both UTF-8 and ISO-8859-1 encoded URIs.
-	 *
-	 * @param string $str encoded string
-	 * @return string decoded string
+	 * Decodes the path info.
+	 * This method is an improved variant of the native urldecode() function and used in {@link getPathInfo getPathInfo()} to
+	 * decode the path part of the request URI. You may override this method to change the way the path info is being decoded.
+	 * @param string $pathInfo encoded path info
+	 * @return string decoded path info
+	 * @since 1.1.10
 	 */
-	private function urldecode($str)
+	protected function decodePathInfo($pathInfo)
 	{
-		$str = urldecode($str);
+		$pathInfo = urldecode($pathInfo);
 
 		// is it UTF-8?
 		// http://w3.org/International/questions/qa-forms-utf-8.html
@@ -423,13 +435,13 @@ class CHttpRequest extends CApplicationComponent
 		 | \xF0[\x90-\xBF][\x80-\xBF]{2}      # planes 1-3
 		 | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
 		 | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
-		)*$%xs', $str))
+		)*$%xs', $pathInfo))
 		{
-			return $str;
+			return $pathInfo;
 		}
 		else
 		{
-			return utf8_encode($str);
+			return utf8_encode($pathInfo);
 		}
 	}
 
@@ -491,10 +503,16 @@ class CHttpRequest extends CApplicationComponent
 
 	/**
 	 * Returns the request type, such as GET, POST, HEAD, PUT, DELETE.
+	 * Request type can be manually set in POST requests with a parameter named _method. Useful 
+	 * for RESTful request from older browsers which do not support PUT or DELETE 
+	 * natively (available since version 1.1.11).
 	 * @return string request type, such as GET, POST, HEAD, PUT, DELETE.
 	 */
 	public function getRequestType()
 	{
+		if(isset($_POST['_method']))
+			return strtoupper($_POST['_method']);
+
 		return strtoupper(isset($_SERVER['REQUEST_METHOD'])?$_SERVER['REQUEST_METHOD']:'GET');
 	}
 
@@ -514,7 +532,17 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getIsDeleteRequest()
 	{
-		return isset($_SERVER['REQUEST_METHOD']) && !strcasecmp($_SERVER['REQUEST_METHOD'],'DELETE');
+		return (isset($_SERVER['REQUEST_METHOD']) && !strcasecmp($_SERVER['REQUEST_METHOD'],'DELETE')) || $this->getIsDeleteViaPostRequest();
+	}
+
+	/**
+	 * Returns whether this is a DELETE request which was tunneled through POST.
+	 * @return boolean whether this is a DELETE request tunneled through POST.
+	 * @since 1.1.11
+	 */
+	protected function getIsDeleteViaPostRequest()
+	{
+		return isset($_POST['_method']) && !strcasecmp($_POST['_method'],'DELETE');
 	}
 
 	/**
@@ -524,7 +552,17 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getIsPutRequest()
 	{
-		return isset($_SERVER['REQUEST_METHOD']) && !strcasecmp($_SERVER['REQUEST_METHOD'],'PUT');
+		return (isset($_SERVER['REQUEST_METHOD']) && !strcasecmp($_SERVER['REQUEST_METHOD'],'PUT')) || $this->getIsPutViaPostReqest();
+	}
+
+	/**
+	 * Returns whether this is a PUT request which was tunneled through POST.
+	 * @return boolean whether this is a PUT request tunneled through POST.
+	 * @since 1.1.11
+	 */	
+	protected function getIsPutViaPostReqest()
+	{
+		return isset($_POST['_method']) && !strcasecmp($_POST['_method'],'PUT');
 	}
 
 	/**
@@ -534,6 +572,16 @@ class CHttpRequest extends CApplicationComponent
 	public function getIsAjaxRequest()
 	{
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']==='XMLHttpRequest';
+	}
+
+	/**
+	 * Returns whether this is an Adobe Flash or Adobe Flex request.
+	 * @return boolean whether this is an Adobe Flash or Adobe Flex request.
+	 * @since 1.1.11
+	 */
+	public function getIsFlashRequest()
+	{
+		return isset($_SERVER['HTTP_USER_AGENT']) && (stripos($_SERVER['HTTP_USER_AGENT'],'Shockwave')!==false || stripos($_SERVER['HTTP_USER_AGENT'],'Flash')!==false);
 	}
 
 	/**
@@ -792,8 +840,8 @@ class CHttpRequest extends CApplicationComponent
 	 * As this header directive is non-standard different directives exists for different web servers applications:
 	 * <ul>
 	 * <li>Apache: {@link http://tn123.org/mod_xsendfile X-Sendfile}</li>
-	 * <li>Lighttpd v1.4: {@link http://redmine.lighttpd.net/wiki/lighttpd/X-LIGHTTPD-send-file X-LIGHTTPD-send-file}</li>
-	 * <li>Lighttpd v1.5: X-Sendfile {@link http://redmine.lighttpd.net/wiki/lighttpd/X-LIGHTTPD-send-file X-Sendfile}</li>
+	 * <li>Lighttpd v1.4: {@link http://redmine.lighttpd.net/projects/lighttpd/wiki/X-LIGHTTPD-send-file X-LIGHTTPD-send-file}</li>
+	 * <li>Lighttpd v1.5: {@link http://redmine.lighttpd.net/projects/lighttpd/wiki/X-LIGHTTPD-send-file X-Sendfile}</li>
 	 * <li>Nginx: {@link http://wiki.nginx.org/XSendfile X-Accel-Redirect}</li>
 	 * <li>Cherokee: {@link http://www.cherokee-project.com/doc/other_goodies.html#x-sendfile X-Sendfile and X-Accel-Redirect}</li>
 	 * </ul>
@@ -810,29 +858,26 @@ class CHttpRequest extends CApplicationComponent
 	 * <b>Example</b>:
 	 * <pre>
 	 * <?php
-	 *   Yii::app()->request->xSendFile('/home/user/Pictures/picture1.jpg',array(
-	 *	  'saveName'=>'image1.jpg',
-	 *	  'mimeType'=>'image/jpeg',
-	 *	  'terminate'=>false,
-	 *   ));
+	 *    Yii::app()->request->xSendFile('/home/user/Pictures/picture1.jpg',array(
+	 *        'saveName'=>'image1.jpg',
+	 *        'mimeType'=>'image/jpeg',
+	 *        'terminate'=>false,
+	 *    ));
 	 * ?>
 	 * </pre>
 	 * @param string $filePath file name with full path
 	 * @param array $options additional options:
 	 * <ul>
 	 * <li>saveName: file name shown to the user, if not set real file name will be used</li>
-	 * <li>mimeType: mime type of the file, if not set it will be guessed automatically based on the file name.</li>
+	 * <li>mimeType: mime type of the file, if not set it will be guessed automatically based on the file name, if set to null no content-type header will be sent.</li>
 	 * <li>xHeader: appropriate x-sendfile header, defaults to "X-Sendfile"</li>
 	 * <li>terminate: whether to terminate the current application after calling this method, defaults to true</li>
-	 * <li>forceDownload: specifies whether the file will be downloaded or shown inline. Defaults to true. (Since version 1.1.9.)</li>
+	 * <li>forceDownload: specifies whether the file will be downloaded or shown inline, defaults to true. (Since version 1.1.9.)</li>
+	 * <li>addHeaders: an array of additional http headers in header-value pairs (available since version 1.1.10)</li>
 	 * </ul>
-	 * @return boolean false if file not found, true otherwise.
 	 */
 	public function xSendFile($filePath, $options=array())
 	{
-		if(!is_file($filePath))
-			return false;
-
 		if(!isset($options['forceDownload']) || $options['forceDownload'])
 			$disposition='attachment';
 		else
@@ -850,14 +895,18 @@ class CHttpRequest extends CApplicationComponent
 		if(!isset($options['xHeader']))
 			$options['xHeader']='X-Sendfile';
 
-		header('Content-type: '.$options['mimeType']);
+		if($options['mimeType'] !== null)
+			header('Content-type: '.$options['mimeType']);
 		header('Content-Disposition: '.$disposition.'; filename="'.$options['saveName'].'"');
+		if(isset($options['addHeaders']))
+		{
+			foreach($options['addHeaders'] as $header=>$value)
+				header($header.': '.$value);
+		}
 		header(trim($options['xHeader']).': '.$filePath);
 
 		if(!isset($options['terminate']) || $options['terminate'])
 			Yii::app()->end();
-
-		return true;
 	}
 
 	/**
@@ -940,11 +989,15 @@ class CHttpRequest extends CApplicationComponent
  * <pre>
  * $cookies[$name]=new CHttpCookie($name,$value); // sends a cookie
  * $value=$cookies[$name]->value; // reads a cookie value
- * unset($cookies[$name]);  // removes a cookie
+ * unset($cookies[$name]); // removes a cookie
  * </pre>
- *
+ * Additionally (since Yii 1.1.11) a cookie can be added as an object, 
+ * without setting the cookie name twice:
+ * <pre>
+ * $cookies->add(new CHttpCookie($name, $value)); // sends a cookie
+ * </pre>
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CHttpRequest.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.web
  * @since 1.0
  */
@@ -999,18 +1052,36 @@ class CCookieCollection extends CMap
 	 * Adds a cookie with the specified name.
 	 * This overrides the parent implementation by performing additional
 	 * operations for each newly added CHttpCookie object.
-	 * @param mixed $name Cookie name.
-	 * @param CHttpCookie $cookie Cookie object.
+	 * This method provides the following two options to add a cookie:
+	 * <pre>
+	 * // Array access style - note that cookie name should be used twice here
+	 * Yii::app()->request->cookies['name']=new CHttpCookie('name',$value);
+	 * // Object style - note that cookie name is used only once here
+	 * Yii::app()->request->cookies->add(new CHttpCookie('name', $value));
+	 * </pre>
+	 * @param mixed $name Cookie name or an instance of {@link CHttpCookie}.
+	 * @param CHttpCookie $cookie An instance of {@link HttpCookie}, only used if the first 
+	 * parameter is not an instance of {@link CHttpCookie}. Defaults to null.
 	 * @throws CException if the item to be inserted is not a CHttpCookie object.
 	 */
-	public function add($name,$cookie)
+	public function add($name,$cookie=null)
 	{
-		if($cookie instanceof CHttpCookie)
+		if($name instanceof CHttpCookie)
 		{
-			$this->remove($name);
-			parent::add($name,$cookie);
+			$cookieName=$name->name;
+			$cookieObject=$name;
+		}
+		else
+		{
+			$cookieName=(string)$name;
+			$cookieObject=$cookie;
+		}
+		if($cookieObject instanceof CHttpCookie)
+		{
+			$this->remove($cookieName);
+			parent::add($cookieName,$cookieObject);
 			if($this->_initialized)
-				$this->addCookie($cookie);
+				$this->addCookie($cookieObject);
 		}
 		else
 			throw new CException(Yii::t('yii','CHttpCookieCollection can only hold CHttpCookie objects.'));

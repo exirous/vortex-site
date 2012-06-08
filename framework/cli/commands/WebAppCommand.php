@@ -6,14 +6,14 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: WebAppCommand.php 3477 2011-12-06 22:33:37Z alexander.makarow $
+ * @version $Id$
  */
 
 /**
  * WebAppCommand creates an Yii Web application at the specified location.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: WebAppCommand.php 3477 2011-12-06 22:33:37Z alexander.makarow $
+ * @version $Id$
  * @package system.cli.commands
  * @since 1.0
  */

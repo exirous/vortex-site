@@ -20,7 +20,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CUniqueValidator.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.validators
  * @since 1.0
  */
@@ -92,7 +92,7 @@ class CUniqueValidator extends CValidator
 
 		$columnName=$column->rawName;
 		$criteria=new CDbCriteria(array(
-			'condition'=>$this->caseSensitive ? "$columnName=:value" : "LOWER($columnName)=LOWER(:value)",
+			'condition'=>$this->caseSensitive ? $finder->getTableAlias(true).".{$columnName}=:value" : "LOWER(".$finder->getTableAlias(true).".{$columnName})=LOWER(:value)",
 			'params'=>array(':value'=>$value),
 		));
 		if($this->criteria!==array())
@@ -122,7 +122,7 @@ class CUniqueValidator extends CValidator
 		if($exists)
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} "{value}" has already been taken.');
-			$this->addError($object,$attribute,$message,array('{value}'=>$value));
+			$this->addError($object,$attribute,$message,array('{value}'=>CHtml::encode($value)));
 		}
 	}
 }

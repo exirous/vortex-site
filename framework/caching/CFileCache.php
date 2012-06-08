@@ -21,7 +21,7 @@
  * when storing a piece of data in the cache. Defaults to 100, meaning 0.01% chance.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileCache.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.caching
  */
 class CFileCache extends CCache
@@ -49,8 +49,6 @@ class CFileCache extends CCache
 	/**
 	 * Initializes this application component.
 	 * This method is required by the {@link IApplicationComponent} interface.
-	 * It checks the availability of memcache.
-	 * @throws CException if APC cache extension is not loaded or is disabled.
 	 */
 	public function init()
 	{

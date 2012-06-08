@@ -15,7 +15,7 @@ require_once('PHPUnit/Autoload.php');
  * CTestCase is the base class for all test case classes.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CTestCase.php 2997 2011-02-23 13:51:40Z alexander.makarow $
+ * @version $Id$
  * @package system.test
  * @since 1.1
  */

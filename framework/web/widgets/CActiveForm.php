@@ -141,7 +141,7 @@
  * the <code>performAjaxValidation</code> method and its invocation.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveForm.php 3336 2011-07-02 10:43:56Z mdomba $
+ * @version $Id$
  * @package system.web.widgets
  * @since 1.1.1
  */
@@ -463,11 +463,18 @@ class CActiveForm extends CWidget
 		if($enableClientValidation)
 		{
 			$validators=isset($htmlOptions['clientValidation']) ? array($htmlOptions['clientValidation']) : array();
-			foreach($model->getValidators($attribute) as $validator)
+
+			$attributeName = $attribute;
+			if(($pos=strrpos($attribute,']'))!==false && $pos!==strlen($attribute)-1) // e.g. [a]name
 			{
-				if($enableClientValidation && $validator->enableClientValidation)
+				$attributeName=substr($attribute,$pos+1);
+			}
+
+			foreach($model->getValidators($attributeName) as $validator)
+			{
+				if($validator->enableClientValidation)
 				{
-					if(($js=$validator->clientValidateAttribute($model,$attribute))!='')
+					if(($js=$validator->clientValidateAttribute($model,$attributeName))!='')
 						$validators[]=$js;
 				}
 			}
@@ -551,6 +558,86 @@ class CActiveForm extends CWidget
 	public function labelEx($model,$attribute,$htmlOptions=array())
 	{
 		return CHtml::activeLabelEx($model,$attribute,$htmlOptions);
+	}
+	
+	/**
+	 * Renders a url field for a model attribute.
+	 * This method is a wrapper of {@link CHtml::activeUrlField}.
+	 * Please check {@link CHtml::activeUrlField} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated input field
+	 * @since 1.1.11
+	 */
+	public function urlField($model,$attribute,$htmlOptions=array())
+	{
+		return CHtml::activeUrlField($model,$attribute,$htmlOptions);
+	}
+	
+	/**
+	 * Renders an email field for a model attribute.
+	 * This method is a wrapper of {@link CHtml::activeEmailField}.
+	 * Please check {@link CHtml::activeEmailField} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated input field
+	 * @since 1.1.11
+	 */
+	public function emailField($model,$attribute,$htmlOptions=array())
+	{
+		return CHtml::activeEmailField($model,$attribute,$htmlOptions);
+	}
+	
+	/**
+	 * Renders an number field for a model attribute.
+	 * This method is a wrapper of {@link CHtml::activeNumberField}.
+	 * Please check {@link CHtml::activeNumberField} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated input field
+	 * @since 1.1.11
+	 */
+	public function numberField($model,$attribute,$htmlOptions=array())
+	{
+		return CHtml::activeNumberField($model,$attribute,$htmlOptions);
+	}
+	
+	/**
+	 * Renders an number field for a model attribute.
+	 * This method is a wrapper of {@link CHtml::activeRangeField}.
+	 * Please check {@link CHtml::activeRangeField} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated input field
+	 * @since 1.1.11
+	 */
+	public function rangeField($model,$attribute,$htmlOptions=array())
+	{
+		return CHtml::activeRangeField($model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Renders an number field for a model attribute.
+	 * This method is a wrapper of {@link CHtml::activeDateField}.
+	 * Please check {@link CHtml::activeDateField} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated input field
+	 * @since 1.1.11
+	 */
+	public function dateField($model,$attribute,$htmlOptions=array())
+	{
+		return CHtml::activeDateField($model,$attribute,$htmlOptions);
 	}
 
 	/**
@@ -746,6 +833,34 @@ class CActiveForm extends CWidget
 			$model->validate($attributes);
 			foreach($model->getErrors() as $attribute=>$errors)
 				$result[CHtml::activeId($model,$attribute)]=$errors;
+		}
+		return function_exists('json_encode') ? json_encode($result) : CJSON::encode($result);
+	}
+
+	/**
+	 * Validates an array of model instances and returns the results in JSON format.
+	 * This is a helper method that simplifies the way of writing AJAX validation code for tabular input.
+	 * @param mixed $models an array of model instances.
+	 * @param array $attributes list of attributes that should be validated. Defaults to null,
+	 * meaning any attribute listed in the applicable validation rules of the models should be
+	 * validated. If this parameter is given as a list of attributes, only
+	 * the listed attributes will be validated.
+	 * @param boolean $loadInput whether to load the data from $_POST array in this method.
+	 * If this is true, the model will be populated from <code>$_POST[ModelClass][$i]</code>.
+	 * @return string the JSON representation of the validation error messages.
+	 */
+	public static function validateTabular($models, $attributes=null, $loadInput=true)
+	{
+		$result=array();
+		if(!is_array($models))
+			$models=array($models);
+		foreach($models as $i=>$model)
+		{
+			if($loadInput && isset($_POST[get_class($model)][$i]))
+				$model->attributes=$_POST[get_class($model)][$i];
+			$model->validate($attributes);
+			foreach($model->getErrors() as $attribute=>$errors)
+				$result[CHtml::activeId($model,'['.$i.']'.$attribute)]=$errors;
 		}
 		return function_exists('json_encode') ? json_encode($result) : CJSON::encode($result);
 	}

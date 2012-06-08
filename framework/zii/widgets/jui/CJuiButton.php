@@ -45,7 +45,7 @@ Yii::import('zii.widgets.jui.CJuiInputWidget');
  * for possible options (name-value pairs).
  *
  * @author Sebastian Thierer <sebathi@gmail.com>
- * @version $Id: CJuiButton.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id$
  * @package zii.widgets.jui
  * @since 1.1.3
  */
@@ -62,7 +62,8 @@ class CJuiButton extends CJuiInputWidget
 	 */
 	public $htmlTag = 'div';
 	/**
-	 * @var string The url used when a buttonType "link" is selected.
+	 * @var mixed a URL or an action route that can be used to create a URL. Used when a buttonType "link" is selected.
+	 * See {@link normalizeUrl} for more details about how to specify this parameter.
 	 */
 	public $url = null;
 

@@ -44,7 +44,7 @@ if(!class_exists('HTMLPurifier_Bootstrap',false))
  * @property string $defaultCssFile The default CSS file that is used to highlight code blocks.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMarkdownParser.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.utils
  * @since 1.0
  */

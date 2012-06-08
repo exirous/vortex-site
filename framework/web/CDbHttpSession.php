@@ -38,7 +38,7 @@
  * @property boolean $useCustomStorage Whether to use custom storage.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbHttpSession.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package system.web
  * @since 1.0
  */
@@ -131,12 +131,19 @@ class CDbHttpSession extends CHttpSession
 	 */
 	protected function createSessionTable($db,$tableName)
 	{
+		$driver=$db->getDriverName();
+		if($driver==='mysql')
+			$blob='LONGBLOB';
+		else if($driver==='pgsql')
+			$blob='BYTEA';
+		else
+			$blob='BLOB';
 		$sql="
 CREATE TABLE $tableName
 (
 	id CHAR(32) PRIMARY KEY,
 	expire INTEGER,
-	data TEXT
+	data $blob
 )";
 		$db->createCommand($sql)->execute();
 	}

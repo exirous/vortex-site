@@ -12,7 +12,7 @@
  * CMysqlSchema is the class for retrieving metadata information from a MySQL database (version 4.1.x and 5.x).
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CMysqlSchema.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.db.schema.mysql
  * @since 1.0
  */

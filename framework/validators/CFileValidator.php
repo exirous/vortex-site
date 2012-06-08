@@ -49,13 +49,13 @@
  * <ul>
  * <li>{file}: replaced with the name of the file.</li>
  * <li>{limit}: when using {@link tooLarge}, replaced with {@link maxSize}; 
- * when using {@link tooSmall}, replaced with {@link maxSize}; and when using {@link tooMany} 
+ * when using {@link tooSmall}, replaced with {@link minSize}; and when using {@link tooMany} 
  * replaced with {@link maxFiles}.</li>
  * <li>{extensions}: when using {@link wrongType}, it will be replaced with the allowed extensions.</li>
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileValidator.php 3491 2011-12-17 05:17:57Z jefftulsa $
+ * @version $Id$
  * @package system.validators
  * @since 1.0
  */

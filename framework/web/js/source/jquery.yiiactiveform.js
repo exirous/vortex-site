@@ -5,7 +5,7 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2010 Yii Software LLC
  * @license http://www.yiiframework.com/license/
- * @version $Id: jquery.yiiactiveform.js 3538 2012-01-14 18:24:30Z mdomba $
+ * @version $Id$
  * @since 1.1.1
  */
 

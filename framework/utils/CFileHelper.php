@@ -12,7 +12,7 @@
  * CFileHelper provides a set of helper methods for common file system operations.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CFileHelper.php 3289 2011-06-18 21:20:13Z qiang.xue $
+ * @version $Id$
  * @package system.utils
  * @since 1.0
  */

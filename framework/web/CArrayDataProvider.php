@@ -41,7 +41,7 @@
  * so that the provider knows which columns can be sorted.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CArrayDataProvider.php 3353 2011-07-12 21:10:36Z alexander.makarow $
+ * @version $Id$
  * @package system.web
  * @since 1.1.4
  */

@@ -18,7 +18,7 @@
  * and used under the application runtime directory.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CDbLogRoute.php 3069 2011-03-14 00:28:38Z qiang.xue $
+ * @version $Id$
  * @package system.logging
  * @since 1.0
  */

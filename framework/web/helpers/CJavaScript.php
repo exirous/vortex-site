@@ -12,7 +12,7 @@
  * CJavaScript is a helper class containing JavaScript-related handling functions.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CJavaScript.php 2799 2011-01-01 19:31:13Z qiang.xue $
+ * @version $Id$
  * @package system.web.helpers
  * @since 1.0
  */

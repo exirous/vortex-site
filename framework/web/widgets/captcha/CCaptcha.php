@@ -28,7 +28,7 @@
  * a verification code matching the code displayed in the CAPTCHA image.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCaptcha.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.web.widgets.captcha
  * @since 1.0
  */

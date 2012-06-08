@@ -23,7 +23,7 @@
  * </ul>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CExistValidator.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.validators
  */
 class CExistValidator extends CValidator
@@ -75,7 +75,7 @@ class CExistValidator extends CValidator
 			throw new CException(Yii::t('yii','Table "{table}" does not have a column named "{column}".',
 				array('{column}'=>$attributeName,'{table}'=>$table->name)));
 
-		$criteria=array('condition'=>$column->rawName.'=:vp','params'=>array(':vp'=>$value));
+		$criteria=array('condition'=>$finder->getTableAlias(true).'.'.$column->rawName.'=:vp','params'=>array(':vp'=>$value));
 		if($this->criteria!==array())
 		{
 			$criteria=new CDbCriteria($criteria);
@@ -85,7 +85,7 @@ class CExistValidator extends CValidator
 		if(!$finder->exists($criteria))
 		{
 			$message=$this->message!==null?$this->message:Yii::t('yii','{attribute} "{value}" is invalid.');
-			$this->addError($object,$attribute,$message,array('{value}'=>$value));
+			$this->addError($object,$attribute,$message,array('{value}'=>CHtml::encode($value)));
 		}
 	}
 }

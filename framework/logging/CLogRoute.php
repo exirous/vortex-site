@@ -25,7 +25,7 @@
  * satisfying both filter conditions will they be returned.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CLogRoute.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.logging
  * @since 1.0
  */

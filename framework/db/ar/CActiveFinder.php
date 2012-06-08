@@ -15,7 +15,7 @@
  * {@link CActiveRecord}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.db.ar
  * @since 1.0
  */
@@ -217,6 +217,9 @@ class CActiveFinder extends CComponent
 
 			$relation=clone $relation;
 			$model=CActiveRecord::model($relation->className);
+
+			$oldDbCriteria=$model->getDbCriteria(false);
+
 			if($relation instanceof CActiveRelation)
 			{
 				$oldAlias=$model->getTableAlias(false,false);
@@ -272,6 +275,8 @@ class CActiveFinder extends CComponent
 				}
 			}
 
+			$model->setDbCriteria($oldDbCriteria);
+
 			// dynamic options
 			if($options!==null)
 				$relation->mergeWith($options);
@@ -319,7 +324,7 @@ class CActiveFinder extends CComponent
  * CJoinElement represents a tree node in the join tree created by {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.db.ar
  * @since 1.0
  */
@@ -1089,6 +1094,8 @@ class CJoinElement
 	{
 		$schema=$this->_builder->getSchema();
 		$joins=array();
+		if(is_string($fks))
+			$fks=preg_split('/\s*,\s*/',$fks,-1,PREG_SPLIT_NO_EMPTY);
 		foreach($fks as $i=>$fk)
 		{
 			if(!is_int($i))
@@ -1204,7 +1211,7 @@ class CJoinElement
  * CJoinQuery represents a JOIN SQL statement.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.db.ar
  * @since 1.0
  */
@@ -1316,7 +1323,7 @@ class CJoinQuery
 	/**
 	 * Creates the SQL statement.
 	 * @param CDbCommandBuilder $builder the command builder
-	 * @return string the SQL statement
+	 * @return CDbCommand DB command instance representing the SQL statement
 	 */
 	public function createCommand($builder)
 	{
@@ -1363,7 +1370,7 @@ class CJoinQuery
  * CStatElement represents STAT join element for {@link CActiveFinder}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CActiveFinder.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.db.ar
  */
 class CStatElement

@@ -25,7 +25,7 @@ Yii::import('zii.widgets.grid.CGridColumn');
  * {@link value}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CCheckBoxColumn.php 3437 2011-11-07 15:03:58Z mdomba $
+ * @version $Id$
  * @package zii.widgets.grid
  * @since 1.1
  */

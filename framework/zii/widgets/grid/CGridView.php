@@ -77,7 +77,7 @@ Yii::import('zii.widgets.grid.CCheckBoxColumn');
  * @property CFormatter $formatter The formatter instance. Defaults to the 'format' application component.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CGridView.php 3426 2011-10-25 00:01:09Z alexander.makarow $
+ * @version $Id$
  * @package zii.widgets.grid
  * @since 1.1
  */
@@ -198,7 +198,7 @@ class CGridView extends CBaseListView
 	 */
 	public $selectableRows=1;
 	/**
-	 * @var string the base script URL for all grid view resources (e.g. javascript, CSS file, images).
+	 * @var string the base script URL for all grid view resources (eg javascript, CSS file, images).
 	 * Defaults to null, meaning using the integrated grid view resources (which are published as assets).
 	 */
 	public $baseScriptUrl;
@@ -260,6 +260,15 @@ class CGridView extends CBaseListView
 	 */
 	public $hideHeader=false;
 
+    /**
+     * @var boolean whether to leverage the {@link https://developer.mozilla.org/en/DOM/window.history DOM history object}.  Set this property to true
+     * to persist state of grid across page revisits.  Note, there are two limitations for this feature: 
+     * - this feature is only compatible with browsers that support HTML5.  
+     * - expect unexpected functionality (e.g. multiple ajax calls) if there is more than one grid/list on a single page with enableHistory turned on.
+     * @since 1.1.11
+     */
+    public $enableHistory=false;
+    
 	/**
 	 * Initializes the grid view.
 	 * This method will initialize required property values and instantiate {@link columns} objects.
@@ -363,6 +372,7 @@ class CGridView extends CBaseListView
 			'filterClass'=>$this->filterCssClass,
 			'tableClass'=>$this->itemsCssClass,
 			'selectableRows'=>$this->selectableRows,
+            'enableHistory'=>$this->enableHistory
 		);
 		if($this->ajaxUrl!==null)
 			$options['url']=CHtml::normalizeUrl($this->ajaxUrl);
@@ -383,6 +393,8 @@ class CGridView extends CBaseListView
 		$cs=Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery');
 		$cs->registerCoreScript('bbq');
+        if($this->enableHistory)
+            $cs->registerCoreScript('history');
 		$cs->registerScriptFile($this->baseScriptUrl.'/jquery.yiigridview.js',CClientScript::POS_END);
 		$cs->registerScript(__CLASS__.'#'.$id,"jQuery('#$id').yiiGridView($options);");
 	}
@@ -491,7 +503,7 @@ class CGridView extends CBaseListView
 		}
 		else
 		{
-			echo '<tr><td colspan="'.count($this->columns).'">';
+			echo '<tr><td colspan="'.count($this->columns).'" class="empty">';
 			$this->renderEmptyText();
 			echo "</td></tr>\n";
 		}

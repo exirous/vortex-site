@@ -55,7 +55,7 @@
  * @author	 Michal Migurski <mike-json@teczno.com>
  * @author	 Matt Knapp <mdknapp[at]gmail[dot]com>
  * @author	 Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
- * @version $Id: CJSON.php 3204 2011-05-05 21:36:32Z alexander.makarow $
+ * @version $Id$
  * @package	system.web.helpers
  * @since 1.0
  */
@@ -324,7 +324,13 @@ class CJSON
 	public static function decode($str, $useArray=true)
 	{
 		if(function_exists('json_decode'))
-			return json_decode($str,$useArray);
+			$json = json_decode($str,$useArray);
+
+		// based on investigation, native fails sometimes returning null.
+		// see: http://gggeek.altervista.org/sw/article_20070425.html
+		// As of PHP 5.3.6 it still fails on some valid JSON strings
+		if(!is_null($json))
+			return $json;
 
 		$str = self::reduceString($str);
 

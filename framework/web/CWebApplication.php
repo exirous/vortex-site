@@ -52,7 +52,7 @@
  * @property string $layoutPath The root directory of layout files. Defaults to 'protected/views/layouts'.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CWebApplication.php 3515 2011-12-28 12:29:24Z mdomba $
+ * @version $Id$
  * @package system.web
  * @since 1.0
  */

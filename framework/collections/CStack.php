@@ -26,7 +26,7 @@
  * @property integer $count The number of items in the stack.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: CStack.php 3427 2011-10-25 00:03:52Z alexander.makarow $
+ * @version $Id$
  * @package system.collections
  * @since 1.0
  */
