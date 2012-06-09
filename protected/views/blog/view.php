@@ -9,9 +9,11 @@ $this->breadcrumbs=array(
 
 <div class="actions right">
 <?php 
-if (Yii::app()->user->checkAccess('blog_owner', array('blog' => $model))) {
+if (Yii::app()->user->checkAccess('blog_author', array('blog' => $model))) {
 	echo CHtml::link("Добавить запись", array('post/create', 'blog_id' => $model->id), array('class' => 'btn btn-primary'));
+}
     echo "&nbsp";
+if (Yii::app()->user->checkAccess('blog_owner', array('blog' => $model))) {
     echo CHtml::link("Добавить автора", array('blog/addAuthor', 'id' => $model->id), array('class' => 'btn btn-primary'));
 }
 ?>
