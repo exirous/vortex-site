@@ -84,7 +84,7 @@ class ProfileController extends Controller
 			}
 		}
 	
-		$this->render('addCharacter', array(
+		$this->render('/forms/addCharacter', array(
 			'model' => $model,
 		));		
 	}

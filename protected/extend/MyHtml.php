@@ -28,7 +28,11 @@ class MyHtml extends CHtml {
     }
 
     public static function characterSpan($character) {
-        return '<span class="character '.$character->warcraftClass->english_name.'">'.$character->name.'</span>';
+        if ($character) {
+            return '<span class="character '.$character->warcraftClass->english_name.'">'.$character->name.'</span>';
+        } else {
+            return 'Не установлен основной персонаж';
+        }
     }
 }
 ?>

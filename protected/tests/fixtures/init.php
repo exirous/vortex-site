@@ -35,3 +35,18 @@ $c->createTable('ranks', array(
     'ts_admin' => 'int(1) DEFAULT NULL',
     'role' => 'varchar(30) DEFAULT NULL',
 ));
+
+$c->createTable('blogs', array(
+    'id' => 'int(10) PRIMARY KEY NOT NULL',
+    'title' => 'varchar(200) NOT NULL',
+    'owner_id' => 'int(11) NOT NULL',
+    'created' => 'timestamp DEFAULT NULL',
+    'updated' => 'timestamp DEFAULT NULL',
+    'is_public' => 'int(1) DEFAULT NULL',
+));
+
+$c->createTable('blog_profile_role', array(
+    'blog_id' => 'int(11) NOT NULL',
+    'profile_id' => 'int(11) NOT NULL',
+    'role' => 'VARCHAR(50) NOT NULL',
+));

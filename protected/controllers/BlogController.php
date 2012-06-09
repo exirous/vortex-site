@@ -19,7 +19,7 @@ class BlogController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'update'),
+				'actions'=>array('create', 'update', 'addAuthor'),
 				'roles'=>array('member'),
 			),
 			array('deny',  // deny all users
@@ -115,17 +115,38 @@ class BlogController extends Controller
 		));
 	}
 
-	public function actionAdmin()
-	{
-		$model=new Blog('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Blog']))
-			$model->attributes=$_GET['Blog'];
+	public function actionAddAuthor($id)
+    {
+        $form_model = new CharacterSelect();
+        $blog = $this->loadModel($id);
+        if (!Yii::app()->user->checkAccess('blog_owner', array('blog' => $blog))) {
+            Yii::app()->user->setFlash('error', 'Нельзя добавлять авторов в чужой блог');
+            $this->redirect(array('view','id'=>$blog->id));
+        }
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+        if(isset($_POST['CharacterSelect']))
+        {
+            $form_model->setAttributes($_POST['CharacterSelect']);
+            if($form_model->validate()) {
+                if ($profile = $form_model->character->profile) {
+                    if ($blog->isProfileRole($profile->id, 'blog_author', array('blog' => $blog))) {
+                        Yii::app()->user->setFlash('error', 'Данный профиль уже присутствует в списке авторов этого блога');
+                        $this->redirect(array('view','id'=>$blog->id));
+                    } else {
+                        $blog->setProfileRole($profile->id, 'blog_author');
+                        Yii::app()->user->setFlash('success', $form_model->character->name." успешно добавлен(а) в авторы блога.");
+                        $this->redirect(array('view','id'=>$blog->id));
+                    }
+                } else{
+                    Yii::app()->user->setFlash('error', $form_model->character->name." не прикреплен к профилю сайта. Добавление в авторы невозможно");
+                    $this->redirect(array('view','id'=>$blog->id));
+                }
+            }
+        }
+        $this->render('/forms/addCharacter', array(
+            'model' => $form_model,
+        ));
+    }
 
 	public function loadModel($id)
 	{

@@ -9,7 +9,10 @@
 	<h3><?php echo CHtml::link(CHtml::encode($data->title), array('view', 'id'=>$data->id)); ?>
         <?php if ($data->is_public) {?> <span class="label label-info">Публичный блог</span> <?php } ?>
     </h3> 
-	<?php echo MyHtml::characterSpan($data->owner->mainCharacter); ?> / 
+	<?php echo MyHtml::characterSpan($data->owner->mainCharacter)." / ";
+        foreach ($data->authors as $profile) {
+            echo MyHtml::characterSpan($profile->mainCharacter)." / ";
+        } ?>
 	Создан: <?php echo Yii::app()->dateFormatter->formatDateTime($data->created, 'full', null); ?>
     <div class="clear"></div>	
 </div>
