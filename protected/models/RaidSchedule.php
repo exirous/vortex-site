@@ -7,6 +7,11 @@
  */
 class RaidSchedule extends CActiveRecord
 {
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+
     public function tableName() {
         return 'raid_schedules';
     }
@@ -22,15 +27,15 @@ class RaidSchedule extends CActiveRecord
         if (!isset($time)) $time = time();
 
         $time_passed = (date('N', $time)-1)* 24 * 3600;
-        $startOfWeek = mktime(0,0,0,date('m'),date('d'),date('Y')) - $time_passed;
+        $startOfWeek = mktime(0,0,0,date('m', $time),date('d', $time),date('Y', $time)) - $time_passed;
 
         foreach ($this->days_of_week() as $field => $time_since_begin_week) {
             $startOfDay = $startOfWeek + $time_since_begin_week;
-            if (RaidEvent::model()->find('raid_schedule_id = '.$this->id." AND event_datetime BETWEEN " .$startOfDay. " AND ".($startOfDay+24*60*60-1))) continue;
+            if (RaidEvent::model()->find('raid_schedule_id = '.$this->id." AND event_datetime BETWEEN '" . MySQL::timestampToMySqlString($startOfDay). "' AND '".MySQL::timestampToMySqlString($startOfDay+24*60*60-1)."'")) continue;
             if ($this->$field) {
                 $raid_event_attributes = array(
                     'title' => $this->title,
-                    'event_datetime' => $startOfDay + $this->raid_time,
+                    'event_datetime' => MySQL::timestampToMySqlString($startOfDay + $this->raid_time),
                     'raid_schedule_id' => $this->id,
                 );
 

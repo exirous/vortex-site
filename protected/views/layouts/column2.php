@@ -16,6 +16,7 @@
 		$this->operationMenu[] = array('label'=>'Загрузить список игровых миров', 'url'=>array('wowapi/RealmsLoad'));
 		$this->operationMenu[] = array('label'=>'Загрузить гильдию Вортекс', 'url'=>array('wowapi/GuildLoad'));
 		$this->operationMenu[] = array('label'=>'Обработать TeamSpeak3', 'url'=>array('site/TeamSpeakMaintance'));
+        $this->operationMenu[] = array('label'=>'Заполнить список рейдов', 'url'=>array('raidSchedule/generate'));
 		$this->operationMenu[] = array('label'=>'Список профилей', 'url'=>array('profile/list'));
 ?>
 	<div class="box">
@@ -51,6 +52,19 @@
 		?>
 		</div>
 	</div>
+
+    <div class="box">
+        <h2>Ближайшие рейды</h2>
+        <div class="box_content">
+            <?php
+            $raids_events = RaidEvent::model()->findAll("event_datetime > '".MySQL::timestampToMySqlString(time())."'");
+            foreach ($raids_events as $raid_event) {
+                echo $raid_event->title.'<br/>'.Yii::app()->dateFormatter->formatDateTime($raid_event->event_datetime, 'full', 'medium').'<br/><br/>';
+            }
+
+            ?>
+        </div>
+    </div>
 
 	<?php if (!Yii::app()->user->isGuest) {?>
 	<?php 

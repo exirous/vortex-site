@@ -30,4 +30,13 @@ class RaidScheduleTest extends CDbTestCase {
         $raidSchedule->generateRaidEvents($time);
         $this->assertTrue($raidSchedule->raidEventsCount == 2);
     }
+
+    public function testRaidScheduleGenerateRaidEvents2Week(){
+        $raidSchedule = $this->raid_schedules('raid25');
+        $time = time();
+
+        $raidSchedule->generateRaidEvents($time);
+        $raidSchedule->generateRaidEvents($time+7*24*60*60);
+        $this->assertTrue($raidSchedule->raidEventsCount == 4);
+    }
 }

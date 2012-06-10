@@ -67,6 +67,6 @@ $c->createTable('raid_schedules', array(
 $c->createTable('raid_events', array(
     'id' => 'int(11) PRIMARY KEY',
     'title' => 'varchar(200) NOT NULL',
-    'event_datetime' => 'timestamp NOT NULL',
+    'event_datetime' => 'TEXT NOT NULL',
     'raid_schedule_id' => 'int(11) DEFAULT NULL',
 ));
