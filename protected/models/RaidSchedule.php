@@ -38,9 +38,8 @@ class RaidSchedule extends CActiveRecord
                 $raid_event->setAttributes($raid_event_attributes, false);
                 $raid_event->save();
             }
-            $this->refresh();
         }
-        $this->refresh();//1339081200
+        $this->refresh();
     }
 
     private function days_of_week(){
