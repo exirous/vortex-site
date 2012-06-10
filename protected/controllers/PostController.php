@@ -130,11 +130,17 @@ class PostController extends Controller
 	    $post = $this->loadModel();
     	$comment = $this->newComment($post);
 
-		$commentsProvider = new CActiveDataProvider('Comment', array(
-			'criteria'=>array(
-		        'condition'=>'post_id='.$post->id,
-		        'order'=>'created ASC')		
-			));    	
+		$commentsProvider = new CActiveDataProvider('Comment',
+            array(
+    			'criteria'=>array(
+	    	        'condition'=>'post_id='.$post->id,
+		            'order'=>'created ASC'
+                ),
+                'pagination'=>array(
+                    'pageSize'=>100,
+                ),
+		    )
+        );
 
 	    $this->render('view', array(
 	        'model' => $post,
