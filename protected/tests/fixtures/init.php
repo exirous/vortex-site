@@ -50,3 +50,23 @@ $c->createTable('blog_profile_role', array(
     'profile_id' => 'int(11) NOT NULL',
     'role' => 'VARCHAR(50) NOT NULL',
 ));
+
+$c->createTable('raid_schedules', array(
+    'id' => 'int(11) PRIMARY KEY NOT NULL',
+    'title' => 'varchar(200) NOT NULL',
+    'raid_time' => 'integer(10) NOT NULL',
+    'is_monday' => 'integer(1) DEFAULT 0',
+    'is_tuesday' => 'integer(1) DEFAULT 0',
+    'is_wednesday' => 'integer(1) DEFAULT 0',
+    'is_thursday' => 'integer(1) DEFAULT 0',
+    'is_friday' => 'integer(1) DEFAULT 0',
+    'is_saturday' => 'integer(1) DEFAULT 0',
+    'is_sunday' => 'integer(1) DEFAULT 0',
+));
+
+$c->createTable('raid_events', array(
+    'id' => 'int(11) PRIMARY KEY',
+    'title' => 'varchar(200) NOT NULL',
+    'event_datetime' => 'timestamp NOT NULL',
+    'raid_schedule_id' => 'int(11) DEFAULT NULL',
+));
