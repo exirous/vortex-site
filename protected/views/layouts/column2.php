@@ -59,7 +59,8 @@
             <?php
             $raids_events = RaidEvent::model()->findAll("event_datetime > '".MySQL::timestampToMySqlString(time())."'");
             foreach ($raids_events as $raid_event) {
-                echo $raid_event->title.'<br/>'.Yii::app()->dateFormatter->formatDateTime($raid_event->event_datetime, 'full', 'medium').'<br/><br/>';
+                echo CHtml::link($raid_event->title, array('raidEvent/view', 'id' => $raid_event->id)).'<br/>'.
+                    Yii::app()->dateFormatter->formatDateTime($raid_event->event_datetime, 'full', 'medium').'<br/><br/>';
             }
 
             ?>

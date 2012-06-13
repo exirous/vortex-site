@@ -1,7 +1,7 @@
 <?php
 
 /**
- * User: Ðóñèíîâ Ìàêñèì
+ * User: Ð ÑƒÑÐ¸Ð½Ð¾Ð² ÐœÐ°ÐºÑÐ¸Ð¼
  * Date: 10.06.12
  * Time: 12:08
  */
@@ -20,6 +20,7 @@ class RaidSchedule extends CActiveRecord
         return array(
             'raidEvents' => array(self::HAS_MANY, 'RaidEvent', 'raid_schedule_id'),
             'raidEventsCount' => array(self::STAT, 'RaidEvent', 'raid_schedule_id'),
+            'raidRanks' => array(self::MANY_MANY, 'Rank', 'raid_schedule_rank(raid_schedule_id, rank_id)'),
         );
     }
 

@@ -2,7 +2,7 @@
 return array(
     'Asta' => array(
         'id' => '3',
-        'name' => '����',
+        'name' => 'Аста',
         'rank_id' => '0',
         'warcraft_class_id' => '3',
         'warcraft_race_id' => '11',
@@ -19,7 +19,7 @@ return array(
     ),
     'Member_guild' => array(
         'id' => '103',
-        'name' => '����',
+        'name' => 'Член гильдии',
         'rank_id' => '4',
         'warcraft_class_id' => '3',
         'warcraft_race_id' => '11',
@@ -34,10 +34,44 @@ return array(
         'ts3_normal_token' => 'YiWh6iVK9zVIVGcmodO71+6n+Alsw2VBehIOFGAR',
         'ts3_admin_token' => 'Vshq9tostUkIi8Zncgy6434PiYXYUD0EJMjv4RaJ'
     ),
-    'Not_member_guild' => array(
+    'Raider_guild' => array(
         'id' => '104',
-        'name' => '����',
-        'rank_id' => '4',
+        'name' => 'Рейдер гильдии',
+        'rank_id' => '3',
+        'warcraft_class_id' => '3',
+        'warcraft_race_id' => '11',
+        'profile_id' => '104',
+        'guild_id' => '1',
+        'realm_id' => '263',
+        'thumbnail' => 'blackscar/216/42499288-avatar.jpg',
+        'level' => '85',
+        'achievement_points' => '11280',
+        'main_character' => '1',
+        'gender' => '1',
+        'ts3_normal_token' => 'YiWh6iVK9zVIVGcmodO71+6n+Alsw2VBehIOFGAR',
+        'ts3_admin_token' => 'Vshq9tostUkIi8Zncgy6434PiYXYUD0EJMjv4RaJ'
+    ),
+    'Friend_guild' => array(
+        'id' => '105',
+        'name' => 'Житель гильдии',
+        'rank_id' => '6',
+        'warcraft_class_id' => '3',
+        'warcraft_race_id' => '11',
+        'profile_id' => '105',
+        'guild_id' => '1',
+        'realm_id' => '263',
+        'thumbnail' => 'blackscar/216/42499288-avatar.jpg',
+        'level' => '85',
+        'achievement_points' => '11280',
+        'main_character' => '1',
+        'gender' => '1',
+        'ts3_normal_token' => 'YiWh6iVK9zVIVGcmodO71+6n+Alsw2VBehIOFGAR',
+        'ts3_admin_token' => 'Vshq9tostUkIi8Zncgy6434PiYXYUD0EJMjv4RaJ'
+    ),
+    'Not_member_guild' => array(
+        'id' => '106',
+        'name' => 'Аста',
+        'rank_id' => '0',
         'warcraft_class_id' => '3',
         'warcraft_race_id' => '11',
         'profile_id' => '3',

@@ -64,9 +64,22 @@ $c->createTable('raid_schedules', array(
     'is_sunday' => 'integer(1) DEFAULT 0',
 ));
 
+$c->createTable('raid_schedule_rank', array(
+    'raid_schedule_id' => 'int(11) NOT NULL',
+    'rank_id' => 'int(11) NOT NULL',
+));
+
 $c->createTable('raid_events', array(
     'id' => 'int(11) PRIMARY KEY',
     'title' => 'varchar(200) NOT NULL',
     'event_datetime' => 'TEXT NOT NULL',
     'raid_schedule_id' => 'int(11) DEFAULT NULL',
+    'is_fixed' => 'int(1) NOT NULL DEFAULT 0',
+));
+
+$c->createTable('raid_event_participations', array(
+    'raid_event_id' => 'int(11) NOT NULL',
+    'character_id' => 'int(11) NOT NULL',
+    'raid_participation_state' => 'int(1) NOT NULL',
+    'UNIQUE (raid_event_id, character_id)'
 ));

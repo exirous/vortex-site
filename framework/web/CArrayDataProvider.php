@@ -118,6 +118,18 @@ class CArrayDataProvider extends CDataProvider
 	 * After calling this method, {@link rawData} will be modified.
 	 * @param array $directions the sorting directions (field name => whether it is descending sort)
 	 */
+    protected function getField($data, $name)
+    {
+        $property_arrays = explode('.',$name);
+        $property = $property_arrays[0];
+        $data = is_object($data) ? $data->$property : $data[$property];
+        unset($property_arrays[0]);
+        if (count($property_arrays) > 0) {
+            $data = $this->getField($data, implode('.', $property_arrays));
+        }
+        return $data;
+    }
+
 	protected function sortData($directions)
 	{
 		if(empty($directions))
@@ -127,8 +139,9 @@ class CArrayDataProvider extends CDataProvider
 		foreach($directions as $name=>$descending)
 		{
 			$column=array();
-			foreach($this->rawData as $index=>$data)
-				$column[$index]=is_object($data) ? $data->$name : $data[$name];
+			foreach($this->rawData as $index=>$data) {
+                $column[$index]= $this->getField($data, $name);
+            }
 			$args[]=&$column;
 			$dummy[]=&$column;
 			unset($column);

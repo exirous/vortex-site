@@ -1,12 +1,12 @@
 <?php
 return array(
-    array('id' => '7','name' => 'Àëüò','api_id' => '7','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
-    array('id' => '0','name' => 'ÃèëüäÌàñòåð','api_id' => '0','guild_id' => '1','ts_admin' => '1','role' => 'raider'),
-    array('id' => '6','name' => 'Æèòåëü ãèëüäèè','api_id' => '6','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
-    array('id' => '4','name' => '×ëåí ãèëüäèè','api_id' => '4','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
-    array('id' => '3','name' => 'Ðåéäåð','api_id' => '3','guild_id' => '1','ts_admin' => NULL,'role' => 'raider'),
-    array('id' => '1','name' => 'Îôèöåð','api_id' => '1','guild_id' => '1','ts_admin' => '1','role' => 'raider'),
-    array('id' => '8','name' => 'Íîâè÷îê','api_id' => '8','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
+    array('id' => '7','name' => 'ÐÐ»ÑŒÑ‚','api_id' => '7','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
+    array('id' => '0','name' => 'Ð“Ð¸Ð»ÑŒÐ´Ð¼Ð°ÑÑ‚ÐµÐ¾','api_id' => '0','guild_id' => '1','ts_admin' => '1','role' => 'raider'),
+    array('id' => '6','name' => 'Ð–Ð¸Ñ‚ÐµÐ»ÑŒ Ð³Ð¸Ð»ÑŒÐ´Ð¸Ð¸','api_id' => '6','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
+    array('id' => '4','name' => 'Ð§Ð»ÐµÐ½ Ð³Ð¸Ð»ÑŒÐ´Ð¸Ð¸','api_id' => '4','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
+    array('id' => '3','name' => 'Ð ÐµÐ¹Ð´ÐµÑ€','api_id' => '3','guild_id' => '1','ts_admin' => NULL,'role' => 'raider'),
+    array('id' => '1','name' => 'ÐžÑ„Ð¸Ñ†ÐµÑ€','api_id' => '1','guild_id' => '1','ts_admin' => '1','role' => 'raider'),
+    array('id' => '8','name' => 'Ð¤Ñ€ÐµÐ½Ð´ÑÐ»Ð¾Ñ‚','api_id' => '8','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
     array('id' => '11','name' => '9','api_id' => '9','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
     array('id' => '12','name' => '2','api_id' => '2','guild_id' => '1','ts_admin' => NULL,'role' => 'member'),
     array('id' => '13','name' => '1 - 5','api_id' => '5','guild_id' => '1','ts_admin' => NULL,'role' => 'member')

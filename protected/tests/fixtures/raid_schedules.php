@@ -18,4 +18,16 @@ return array(
         'is_saturday' => 0,
         'is_sunday' => 0,
     ),
+    'raid25-events' => array(
+        'id' => '2',
+        'title' => 'Фарм рейд 25',
+        'raid_time' => 20*60*60,
+        'is_monday' => 0,
+        'is_tuesday' => 0,
+        'is_wednesday' => 1,
+        'is_thursday' => 1,
+        'is_friday' => 0,
+        'is_saturday' => 0,
+        'is_sunday' => 0,
+    ),
 );
