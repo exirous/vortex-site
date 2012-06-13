@@ -44,8 +44,12 @@ class RaidEvent extends CActiveRecord {
             $attributes['rank_id'] = array_map(function ($rank) {return $rank->id;}, $ranks_list);
         }
         $participants = Character::model()->findAllByAttributes($attributes);
-        $raid_participants = array();
+
+        $raid_participants = $this->getFixedParticipations();
+        $already_fixed = array_map(function ($raid_participation) {return $raid_participation->character->id;}, $raid_participants);
+
         foreach ($participants as $participant) {
+            if (in_array($participant->id, $already_fixed)) continue;
             $raid_participant = new RaidParticipation();
             $raid_participant->character_id = $participant->id;
             $raid_participant->raid_event_id = $this->id;
@@ -82,6 +86,14 @@ class RaidEvent extends CActiveRecord {
         $command->bindValue(":character_id", $character->id, PDO::PARAM_INT);
         $command->bindValue(":state", $state, PDO::PARAM_INT);
         return $command->execute() > 0 ? true : false;
+    }
+
+    public function getCharacterState($character) {
+        $sql = "SELECT raid_participation_state FROM raid_event_participations WHERE raid_event_id = :raid_event_id AND character_id = :character_id";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue(":raid_event_id", $this->id, PDO::PARAM_INT);
+        $command->bindValue(":character_id", $character->id, PDO::PARAM_INT);
+        return $command->queryScalar();
     }
 
 }

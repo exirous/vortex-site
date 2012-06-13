@@ -59,8 +59,20 @@
             <?php
             $raids_events = RaidEvent::model()->findAll("event_datetime > '".MySQL::timestampToMySqlString(time())."'");
             foreach ($raids_events as $raid_event) {
-                echo CHtml::link($raid_event->title, array('raidEvent/view', 'id' => $raid_event->id)).'<br/>'.
-                    Yii::app()->dateFormatter->formatDateTime($raid_event->event_datetime, 'full', 'medium').'<br/><br/>';
+                echo CHtml::link($raid_event->title, array('raidEvent/view', 'id' => $raid_event->id)).'<br/>';
+                echo Yii::app()->dateFormatter->formatDateTime($raid_event->event_datetime, 'full', 'medium').'<br/>';
+
+                $profile = Yii::app()->user->profile;
+                if ($profile && !$raid_event->is_fixed && $profile->mainCharacter) {
+                    $state = $raid_event->getCharacterState($profile->mainCharacter);
+                    if ($state != RaidEvent::RAID_PARTICIPATION_NORMAL)
+                        echo CHtml::link('Буду', array('raidEvent/setRaidParticipationStateNormal', 'id'=>$raid_event->id), array('class' => 'btn btn-success')).'&nbsp;';
+                    if ($state != RaidEvent::RAID_PARTICIPATION_LATE)
+                        echo CHtml::link('Опоздаю', array('raidEvent/setRaidParticipationStateLate', 'id'=>$raid_event->id), array('class' => 'btn btn-warning')).'&nbsp;';
+                    if ($state != RaidEvent::RAID_PARTICIPATION_NO)
+                        echo CHtml::link('Не смогу придти', array('raidEvent/setRaidParticipationStateNo', 'id'=>$raid_event->id), array('class' => 'btn btn-danger')).'&nbsp;';
+                }
+                echo '<br/><br/>';
             }
 
             ?>

@@ -23,6 +23,10 @@ class RaidEventController extends Controller {
                 'actions'=>array('view'),
                 'users'=>array('*'),
             ),
+            array('allow',
+                'actions'=>array('setRaidParticipationStateNormal','setRaidParticipationStateNo', 'setRaidParticipationStateLate'),
+                'roles'=>array('member'),
+            ),
             array('deny',
                 'users'=>array('*'),
             ),
@@ -54,6 +58,33 @@ class RaidEventController extends Controller {
             'model' => $raid_event,
             'participants' => $data_provider,
         ));
+    }
+
+    public function actionSetRaidParticipationStateNormal () {
+        $raid_event = $this->loadModel();
+        $profile = Yii::app()->user->profile;
+        if ($profile && !$raid_event->is_fixed && $profile->mainCharacter) {
+            $raid_event->setCharacterState($profile->mainCharacter, RaidEvent::RAID_PARTICIPATION_NORMAL);
+        }
+        $this->redirect(array('raidEvent/view', 'id' => $raid_event->id));
+    }
+
+    public function actionSetRaidParticipationStateNo () {
+        $raid_event = $this->loadModel();
+        $profile = Yii::app()->user->profile;
+        if ($profile && !$raid_event->is_fixed && $profile->mainCharacter) {
+            $raid_event->setCharacterState($profile->mainCharacter, RaidEvent::RAID_PARTICIPATION_NO);
+        }
+        $this->redirect(array('raidEvent/view', 'id' => $raid_event->id));
+    }
+
+    public function actionSetRaidParticipationStateLate () {
+        $raid_event = $this->loadModel();
+        $profile = Yii::app()->user->profile;
+        if ($profile && !$raid_event->is_fixed && $profile->mainCharacter) {
+            $raid_event->setCharacterState($profile->mainCharacter, RaidEvent::RAID_PARTICIPATION_LATE);
+        }
+        $this->redirect(array('raidEvent/view', 'id' => $raid_event->id));
     }
 
     public function loadModel()
