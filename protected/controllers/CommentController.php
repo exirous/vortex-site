@@ -49,7 +49,7 @@ class CommentController extends Controller
 
         $model = $this->loadModel();
 
-        if (!Yii::app()->user->checkAccess('comment_edit')) {
+        if (!Yii::app()->user->checkAccess('comment_edit', array('comment' => $model))) {
             throw new CHttpException(400,'Нельзя редактирировать данный комментарий.');
         }
 
