@@ -1,5 +1,4 @@
 <div class="post">
-
     <h2>
         <?php echo CHtml::link(CHtml::encode($data->title), array('post/view', 'id'=>$data->id)); ?>
     </h2>  
@@ -45,4 +44,5 @@
         </div>
         <div class="clear"></div>
     </div>
+    <div class="clear"></div>
 </div>

@@ -12,8 +12,8 @@
 	</div>
 </fieldset>
 
-<?php echo CHtml::submitButton('Добавить', array('class' => 'btn btn-primary right')); ?>
+<?php echo CHtml::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', array('class' => 'btn btn-primary right')); ?>
 
 <?php $this->endWidget(); ?>
-
+    <div class="clear"></div>
 </div>

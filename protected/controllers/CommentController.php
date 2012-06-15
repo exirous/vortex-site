@@ -9,7 +9,7 @@ class CommentController extends Controller
 	public function filters()
 	{
 		return array(
-			'accessControl', 
+			'accessControl',
 		);
 	}
 
@@ -17,7 +17,7 @@ class CommentController extends Controller
 	{
 		return array(
 			array('allow',
-				'actions'=>array('delete'),
+				'actions'=>array('delete', 'edit'),
 				'users'=>array('@'),
 			),
 			array('deny', 
@@ -32,11 +32,10 @@ class CommentController extends Controller
 		{
 			$comment = $this->loadModel($id);
 			$post_id = $comment->post_id;
-
-			if (Yii::app()->user->isProfileId($comment->author_id) || Yii::app()->user->checkAccess('administrator')) {
+            if (Yii::app()->user->checkAccess('comment_delete')) {
 				$comment->delete();
 			} else {
-            	Yii::app()->user->setFlash('error', "У вас нет прав для удаления комментария");				
+            	Yii::app()->user->setFlash('error', "Вы не можете удалить данный комментарий");
 			}
 
 			if(!isset($_GET['ajax']))
@@ -44,7 +43,31 @@ class CommentController extends Controller
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}	
+	}
+
+    public function actionEdit() {
+
+        $model = $this->loadModel();
+
+        if (!Yii::app()->user->checkAccess('comment_edit')) {
+            throw new CHttpException(400,'Нельзя редактирировать данный комментарий.');
+        }
+
+        if(isset($_POST['Comment']))
+        {
+            $model->attributes=$_POST['Comment'];
+            if ($model->save()) {
+                $this->redirect(array('post/view', 'id' => $model->post_id));
+            }
+        }
+
+        if(isset($_GET['ajax'])) {
+            $this->renderPartial('/comment/_form', array('model' => $model));
+        } else {
+            $this->render('/comment/edit', array('model' => $model));
+        }
+
+    }
 
 	public function loadModel()
 	{

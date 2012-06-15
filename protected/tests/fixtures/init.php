@@ -36,6 +36,15 @@ $c->createTable('ranks', array(
     'role' => 'varchar(30) DEFAULT NULL',
 ));
 
+$c->createTable('comments', array(
+    'id' => 'int(10) PRIMARY KEY NOT NULL',
+    'text' => 'text NOT NULL',
+    'post_id' => 'int(11) NOT NULL',
+    'author_id' => 'int(11) NOT NULL',
+    'created' => 'datetime DEFAULT NULL',
+    'updated' => 'datetime DEFAULT NULL',
+));
+
 $c->createTable('blogs', array(
     'id' => 'int(10) PRIMARY KEY NOT NULL',
     'title' => 'varchar(200) NOT NULL',
