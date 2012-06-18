@@ -69,7 +69,7 @@ class ProfileController extends Controller
 
 		if(isset($_POST['CharacterSelect']))
 		{
-			$model->setAttributes($_POST['CharacterSelect']);
+			$model->setAttributes($_POST['CharacterSelect'], false);
 			if($model->validate()) {
 				if ($model->step == 1) {
 					$model->selectItemsForConfirm();
