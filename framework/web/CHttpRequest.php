@@ -49,12 +49,11 @@
  * @property string $acceptTypes User browser accept types, null if not present.
  * @property integer $port Port number for insecure requests.
  * @property integer $securePort Port number for secure requests.
- * @property CCookieCollection $cookies The cookie collection.
+ * @property CCookieCollection|CHttpCookie[] $cookies The cookie collection.
  * @property string $preferredLanguage The user preferred language.
  * @property string $csrfToken The random token for CSRF validation.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.web
  * @since 1.0
  */
@@ -222,7 +221,7 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getPut($name,$defaultValue=null)
 	{
-		if($this->getIsPutViaPostReqest())
+		if($this->getIsPutViaPostRequest())
 			return $this->getPost($name, $defaultValue);
 
 		if($this->_putParams===null)
@@ -498,13 +497,13 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getIsSecureConnection()
 	{
-		return isset($_SERVER['HTTPS']) && !strcasecmp($_SERVER['HTTPS'],'on');
+		return !empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'],'off');
 	}
 
 	/**
 	 * Returns the request type, such as GET, POST, HEAD, PUT, DELETE.
-	 * Request type can be manually set in POST requests with a parameter named _method. Useful 
-	 * for RESTful request from older browsers which do not support PUT or DELETE 
+	 * Request type can be manually set in POST requests with a parameter named _method. Useful
+	 * for RESTful request from older browsers which do not support PUT or DELETE
 	 * natively (available since version 1.1.11).
 	 * @return string request type, such as GET, POST, HEAD, PUT, DELETE.
 	 */
@@ -552,15 +551,15 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function getIsPutRequest()
 	{
-		return (isset($_SERVER['REQUEST_METHOD']) && !strcasecmp($_SERVER['REQUEST_METHOD'],'PUT')) || $this->getIsPutViaPostReqest();
+		return (isset($_SERVER['REQUEST_METHOD']) && !strcasecmp($_SERVER['REQUEST_METHOD'],'PUT')) || $this->getIsPutViaPostRequest();
 	}
 
 	/**
 	 * Returns whether this is a PUT request which was tunneled through POST.
 	 * @return boolean whether this is a PUT request tunneled through POST.
 	 * @since 1.1.11
-	 */	
-	protected function getIsPutViaPostReqest()
+	 */
+	protected function getIsPutViaPostRequest()
 	{
 		return isset($_POST['_method']) && !strcasecmp($_POST['_method'],'PUT');
 	}
@@ -750,8 +749,8 @@ class CHttpRequest extends CApplicationComponent
 
 	/**
 	 * Redirects the browser to the specified URL.
-	 * @param string $url URL to be redirected to. If the URL is a relative one, the base URL of
-	 * the application will be inserted at the beginning.
+	 * @param string $url URL to be redirected to. Note that when URL is not
+	 * absolute (not starting with "/") it will be relative to current request URL.
 	 * @param boolean $terminate whether to terminate the current application
 	 * @param integer $statusCode the HTTP status code. Defaults to 302. See {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}
 	 * for details about HTTP status code.
@@ -816,7 +815,9 @@ class CHttpRequest extends CApplicationComponent
 		{
 			// clean up the application first because the file downloading could take long time
 			// which may cause timeout of some resources (such as DB connection)
+			ob_start();
 			Yii::app()->end(0,false);
+			ob_end_clean();
 			echo $content;
 			exit(0);
 		}
@@ -960,19 +961,33 @@ class CHttpRequest extends CApplicationComponent
 	 */
 	public function validateCsrfToken($event)
 	{
-		if($this->getIsPostRequest())
+		if ($this->getIsPostRequest() ||
+			$this->getIsPutRequest() ||
+			$this->getIsDeleteRequest())
 		{
-			// only validate POST requests
 			$cookies=$this->getCookies();
-			if($cookies->contains($this->csrfTokenName) && isset($_POST[$this->csrfTokenName]))
+
+			$method=$this->getRequestType();
+			switch($method)
 			{
-				$tokenFromCookie=$cookies->itemAt($this->csrfTokenName)->value;
-				$tokenFromPost=$_POST[$this->csrfTokenName];
-				$valid=$tokenFromCookie===$tokenFromPost;
+				case 'POST':
+					$userToken=$this->getPost($this->csrfTokenName);
+				break;
+				case 'PUT':
+					$userToken=$this->getPut($this->csrfTokenName);
+				break;
+				case 'DELETE':
+					$userToken=$this->getDelete($this->csrfTokenName);
+			}
+
+			if (!empty($userToken) && $cookies->contains($this->csrfTokenName))
+			{
+				$cookieToken=$cookies->itemAt($this->csrfTokenName)->value;
+				$valid=$cookieToken===$userToken;
 			}
 			else
-				$valid=false;
-			if(!$valid)
+				$valid = false;
+			if (!$valid)
 				throw new CHttpException(400,Yii::t('yii','The CSRF token could not be verified.'));
 		}
 	}
@@ -989,15 +1004,10 @@ class CHttpRequest extends CApplicationComponent
  * <pre>
  * $cookies[$name]=new CHttpCookie($name,$value); // sends a cookie
  * $value=$cookies[$name]->value; // reads a cookie value
- * unset($cookies[$name]); // removes a cookie
+ * unset($cookies[$name]);  // removes a cookie
  * </pre>
- * Additionally (since Yii 1.1.11) a cookie can be added as an object, 
- * without setting the cookie name twice:
- * <pre>
- * $cookies->add(new CHttpCookie($name, $value)); // sends a cookie
- * </pre>
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.web
  * @since 1.0
  */
@@ -1052,36 +1062,18 @@ class CCookieCollection extends CMap
 	 * Adds a cookie with the specified name.
 	 * This overrides the parent implementation by performing additional
 	 * operations for each newly added CHttpCookie object.
-	 * This method provides the following two options to add a cookie:
-	 * <pre>
-	 * // Array access style - note that cookie name should be used twice here
-	 * Yii::app()->request->cookies['name']=new CHttpCookie('name',$value);
-	 * // Object style - note that cookie name is used only once here
-	 * Yii::app()->request->cookies->add(new CHttpCookie('name', $value));
-	 * </pre>
-	 * @param mixed $name Cookie name or an instance of {@link CHttpCookie}.
-	 * @param CHttpCookie $cookie An instance of {@link HttpCookie}, only used if the first 
-	 * parameter is not an instance of {@link CHttpCookie}. Defaults to null.
+	 * @param mixed $name Cookie name.
+	 * @param CHttpCookie $cookie Cookie object.
 	 * @throws CException if the item to be inserted is not a CHttpCookie object.
 	 */
-	public function add($name,$cookie=null)
+	public function add($name,$cookie)
 	{
-		if($name instanceof CHttpCookie)
+		if($cookie instanceof CHttpCookie)
 		{
-			$cookieName=$name->name;
-			$cookieObject=$name;
-		}
-		else
-		{
-			$cookieName=(string)$name;
-			$cookieObject=$cookie;
-		}
-		if($cookieObject instanceof CHttpCookie)
-		{
-			$this->remove($cookieName);
-			parent::add($cookieName,$cookieObject);
+			$this->remove($name);
+			parent::add($name,$cookie);
 			if($this->_initialized)
-				$this->addCookie($cookieObject);
+				$this->addCookie($cookie);
 		}
 		else
 			throw new CException(Yii::t('yii','CHttpCookieCollection can only hold CHttpCookie objects.'));
@@ -1091,16 +1083,31 @@ class CCookieCollection extends CMap
 	 * Removes a cookie with the specified name.
 	 * This overrides the parent implementation by performing additional
 	 * cleanup work when removing a CHttpCookie object.
+	 * Since version 1.1.11, the second parameter is available that can be used to specify
+	 * the options of the CHttpCookie being removed. For example, this may be useful when dealing
+	 * with ".domain.tld" where multiple subdomains are expected to be able to manage cookies:
+	 *
+	 * <pre>
+	 * $options=array('domain'=>'.domain.tld');
+	 * Yii::app()->request->cookies['foo']=new CHttpCookie('cookie','value',$options);
+	 * Yii::app()->request->cookies->remove('cookie',$options);
+	 * </pre>
+	 *
 	 * @param mixed $name Cookie name.
+	 * @param array $options Cookie configuration array consisting of name-value pairs, available since 1.1.11.
 	 * @return CHttpCookie The removed cookie object.
 	 */
-	public function remove($name)
+	public function remove($name,$options=array())
 	{
 		if(($cookie=parent::remove($name))!==null)
 		{
 			if($this->_initialized)
+			{
+				$cookie->configure($options);
 				$this->removeCookie($cookie);
+			}
 		}
+
 		return $cookie;
 	}
 
@@ -1126,8 +1133,8 @@ class CCookieCollection extends CMap
 	protected function removeCookie($cookie)
 	{
 		if(version_compare(PHP_VERSION,'5.2.0','>='))
-			setcookie($cookie->name,null,0,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
+			setcookie($cookie->name,'',0,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
 		else
-			setcookie($cookie->name,null,0,$cookie->path,$cookie->domain,$cookie->secure);
+			setcookie($cookie->name,'',0,$cookie->path,$cookie->domain,$cookie->secure);
 	}
 }

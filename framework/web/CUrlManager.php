@@ -118,7 +118,6 @@
  * Please refer to the guide for more details about the difference between these two formats.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.web
  * @since 1.0
  */
@@ -238,7 +237,7 @@ class CUrlManager extends CApplicationComponent
 	 * they will be inserted at the beginning.
 	 * @since 1.1.4
 	 */
-	public function addRules($rules, $append=true)
+	public function addRules($rules,$append=true)
 	{
 		if ($append)
 		{
@@ -247,6 +246,7 @@ class CUrlManager extends CApplicationComponent
 		}
 		else
 		{
+			$rules=array_reverse($rules);
 			foreach($rules as $pattern=>$route)
 				array_unshift($this->_rules, $this->createUrlRule($route,$pattern));
 		}
@@ -517,7 +517,6 @@ class CUrlManager extends CApplicationComponent
  * {@link createUrl} and {@link parseUrl}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.web
  * @since 1.1.8
  */
@@ -556,7 +555,6 @@ abstract class CBaseUrlRule extends CComponent
  * may have a set of named parameters.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.web
  * @since 1.0
  */

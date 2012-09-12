@@ -14,11 +14,27 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @author Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id$
  * @package system.db.schema.mssql
  */
 class CMssqlColumnSchema extends CDbColumnSchema
 {
+
+     /**
+     * Initializes the column with its DB type and default value.
+     * This sets up the column's PHP type, size, precision, scale as well as default value.
+     * @param string $dbType the column's DB type
+     * @param mixed $defaultValue the default value
+     */
+     public function init($dbType, $defaultValue)
+     {
+        if ($defaultValue=='(NULL)')
+        {
+            $defaultValue=null;
+        }
+        parent::init($dbType, $defaultValue);
+     }
+
+
 	/**
 	 * Extracts the PHP type from DB type.
 	 * @param string $dbType DB type

@@ -13,7 +13,6 @@
  * CHtml is a static class that provides a collection of helper methods for creating HTML views.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.web.helpers
  * @since 1.0
  */
@@ -56,15 +55,15 @@ class CHtml
 	/**
 	 * Sets the default style for attaching jQuery event handlers.
 	 *
-	 * If set to true (default), live/delegated style is used. Event handlers
-	 * are attached to the document body and can process events from descendant
-	 * elements that are added to the document at a later time.
+	 * If set to true (default), event handlers are delegated.
+	 * Event handlers are attached to the document body and can process events
+	 * from descendant elements that are added to the document at a later time.
 	 *
-	 * If set to false, direct style is used. Event handlers are attached directly
-	 * to the DOM element, that must already exist on the page. Elements injected
-	 * into the page at a later time will not be processed.
+	 * If set to false, event handlers are directly bound.
+	 * Event handlers are attached directly to the DOM element, that must already exist
+	 * on the page. Elements injected into the page at a later time will not be processed.
 	 *
-	 * You can override this setting for a particular element by setting the htmlOptions live attribute
+	 * You can override this setting for a particular element by setting the htmlOptions delegate attribute
 	 * (see {@link clientChange}).
 	 *
 	 * For more information about attaching jQuery event handler see {@link http://api.jquery.com/on/}
@@ -1038,28 +1037,28 @@ EOD;
 	{
 		Yii::app()->getClientScript()->registerCoreScript('jquery');
 		if(!isset($options['url']))
-			$options['url']='js:location.href';
+			$options['url']=new CJavaScriptExpression('location.href');
 		else
 			$options['url']=self::normalizeUrl($options['url']);
 		if(!isset($options['cache']))
 			$options['cache']=false;
 		if(!isset($options['data']) && isset($options['type']))
-			$options['data']='js:jQuery(this).parents("form").serialize()';
+			$options['data']=new CJavaScriptExpression('jQuery(this).parents("form").serialize()');
 		foreach(array('beforeSend','complete','error','success') as $name)
 		{
-			if(isset($options[$name]) && strpos($options[$name],'js:')!==0)
-				$options[$name]='js:'.$options[$name];
+			if(isset($options[$name]) && !($options[$name] instanceof CJavaScriptExpression))
+				$options[$name]=new CJavaScriptExpression($options[$name]);
 		}
 		if(isset($options['update']))
 		{
 			if(!isset($options['success']))
-				$options['success']='js:function(html){jQuery("'.$options['update'].'").html(html)}';
+				$options['success']=new CJavaScriptExpression('function(html){jQuery("'.$options['update'].'").html(html)}');
 			unset($options['update']);
 		}
 		if(isset($options['replace']))
 		{
 			if(!isset($options['success']))
-				$options['success']='js:function(html){jQuery("'.$options['replace'].'").replaceWith(html)}';
+				$options['success']=new CJavaScriptExpression('function(html){jQuery("'.$options['replace'].'").replaceWith(html)}');
 			unset($options['replace']);
 		}
 		return 'jQuery.ajax('.CJavaScript::encode($options).');';
@@ -1755,10 +1754,19 @@ EOD;
 	 * Note, this method does not HTML-encode the generated data. You may call {@link encodeArray} to
 	 * encode it if needed.
 	 * Please refer to the {@link value} method on how to specify value field, text field and group field.
+	 * You can also pass anonymous function as third argument which calculates text field value (PHP 5.3+ only).
+	 * Your anonymous function should receive one argument, which is the model, the current <option> tag is generated from.
+	 *
+	 * <pre>
+	 * CHtml::listData($posts,'id',function($post) {
+	 *     return CHtml::encode($post->title);
+	 * });
+	 * </pre>
+	 *
 	 * @param array $models a list of model objects. This parameter
 	 * can also be an array of associative arrays (e.g. results of {@link CDbCommand::queryAll}).
 	 * @param string $valueField the attribute name for list option values
-	 * @param string $textField the attribute name for list option texts
+	 * @param mixed $textField the attribute name or anonymous function (PHP 5.3+) for list option texts
 	 * @param string $groupField the attribute name for list option group names. If empty, no group will be generated.
 	 * @return array the list data that can be used in {@link dropDownList}, {@link listBox}, etc.
 	 */
@@ -1767,21 +1775,50 @@ EOD;
 		$listData=array();
 		if($groupField==='')
 		{
-			foreach($models as $model)
+			if(class_exists('Closure',false) && $textField instanceof Closure)
 			{
-				$value=self::value($model,$valueField);
-				$text=self::value($model,$textField);
-				$listData[$value]=$text;
+				// $text value is calculated in anonymous function, without groups
+				foreach($models as $model)
+				{
+					$value=self::value($model,$valueField);
+					$text=call_user_func($textField,$model);
+					$listData[$value]=$text;
+				}
+			}
+			else
+			{
+				// $text value is from model attribute, without groups
+				foreach($models as $model)
+				{
+					$value=self::value($model,$valueField);
+					$text=self::value($model,$textField);
+					$listData[$value]=$text;
+				}
 			}
 		}
 		else
 		{
-			foreach($models as $model)
+			if(class_exists('Closure',false) && $textField instanceof Closure)
 			{
-				$group=self::value($model,$groupField);
-				$value=self::value($model,$valueField);
-				$text=self::value($model,$textField);
-				$listData[$group][$value]=$text;
+				// $text value is calculated in anonymous function, with groups
+				foreach($models as $model)
+				{
+					$group=self::value($model,$groupField);
+					$value=self::value($model,$valueField);
+					$text=call_user_func($textField,$model);
+					$listData[$group][$value]=$text;
+				}
+			}
+			else
+			{
+				// $text value is from model attribute, with groups
+				foreach($models as $model)
+				{
+					$group=self::value($model,$groupField);
+					$value=self::value($model,$valueField);
+					$text=self::value($model,$textField);
+					$listData[$group][$value]=$text;
+				}
 			}
 		}
 		return $listData;
@@ -1999,7 +2036,8 @@ EOD;
 	 * javascript would not cause the default behavior of the event.</li>
 	 * <li>confirm: string, specifies the message that should show in a pop-up confirmation dialog.</li>
 	 * <li>ajax: array, specifies the AJAX options (see {@link ajax}).</li>
-	 * <li>live: boolean, whether the event handler should be attached with live/delegate or direct style. If not set, {@link liveEvents} will be used. This option has been available since version 1.1.6.</li>
+	 * <li>live: boolean, whether the event handler should be delegated or directly bound.
+	 * If not set, {@link liveEvents} will be used. This option has been available since version 1.1.11.</li>
 	 * </ul>
 	 * This parameter has been available since version 1.1.1.
 	 */
@@ -2137,8 +2175,8 @@ EOD;
 		{
 			if($pos===0) // [a]name[b][c], should ignore [a]
 			{
-				if(preg_match('/\](.*)/',$attribute,$matches))
-					$attribute=$matches[1];
+				if(preg_match('/\](\w+(\[.+)?)/',$attribute,$matches))
+					$attribute=$matches[1]; // we get: name[b][c]
 				if(($pos=strpos($attribute,'['))===false)
 					return $model->$attribute;
 			}
@@ -2146,7 +2184,7 @@ EOD;
 			$value=$model->$name;
 			foreach(explode('][',rtrim(substr($attribute,$pos+1),']')) as $id)
 			{
-				if(is_array($value) && isset($value[$id]))
+				if((is_array($value) || $value instanceof ArrayAccess) && isset($value[$id]))
 					$value=$value[$id];
 				else
 					return null;
@@ -2163,6 +2201,9 @@ EOD;
 	 */
 	protected static function addErrorCss(&$htmlOptions)
 	{
+		if(empty(self::$errorCss))
+			return;
+
 		if(isset($htmlOptions['class']))
 			$htmlOptions['class'].=' '.self::$errorCss;
 		else

@@ -14,7 +14,7 @@
  * CLogger implements the methods to retrieve the messages with
  * various filter conditions, including log levels and log categories.
  *
- * @property array $logs List of messages. Each array elements represents one message
+ * @property array $logs List of messages. Each array element represents one message
  * with the following structure:
  * array(
  *   [0] => message (string)
@@ -26,7 +26,6 @@
  * @property array $profilingResults The profiling results.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.logging
  * @since 1.0
  */
@@ -78,7 +77,7 @@ class CLogger extends CComponent
 	* @var boolean if we are processing the log or still accepting new log messages
 	* @since 1.1.9
 	*/
-	private $_processing = false;
+	private $_processing=false;
 
 	/**
 	 * Logs a message.
@@ -118,7 +117,7 @@ class CLogger extends CComponent
 	 *
 	 * @param string $levels level filter
 	 * @param string $categories category filter
-	 * @return array list of messages. Each array elements represents one message
+	 * @return array list of messages. Each array element represents one message
 	 * with the following structure:
 	 * array(
 	 *   [0] => message (string)
@@ -146,7 +145,7 @@ class CLogger extends CComponent
 	/**
 	 * Filter function used by {@link getLogs}
 	 * @param array $value element to be filtered
-	 * @return bool true if valid log, false if not.
+	 * @return boolean true if valid log, false if not.
 	 */
 	private function filterByCategory($value)
 	{
@@ -162,7 +161,7 @@ class CLogger extends CComponent
 	/**
 	 * Filter function used by {@link getProfilingResults}
 	 * @param array $value element to be filtered
-	 * @return bool true if valid timing entry, false if not.
+	 * @return boolean true if valid timing entry, false if not.
 	 */
 	private function filterTimingByCategory($value)
 	{
@@ -178,7 +177,7 @@ class CLogger extends CComponent
 	/**
 	 * Filter function used by {@link getLogs}
 	 * @param array $value element to be filtered
-	 * @return bool true if valid log, false if not.
+	 * @return boolean true if valid log, false if not.
 	 */
 	private function filterByLevel($value)
 	{
@@ -234,7 +233,7 @@ class CLogger extends CComponent
 	 * If no filter is specified, the returned results would be an array with each element
 	 * being array($token,$category,$time).
 	 * If a filter is specified, the results would be an array of timings.
-	 * 
+	 *
 	 * Since 1.1.11, filtering results by category supports the same format used for filtering logs in
 	 * {@link getLogs}, and similarly supports filtering by multiple categories and wildcard.
 	 * @param string $token token filter. Defaults to null, meaning not filtered by token.
