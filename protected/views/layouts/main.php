@@ -4,15 +4,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
 
-	<link rel="stylesheet/less" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/less/bootstrap.less">
-	<link rel="stylesheet/less" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/less/responsive.less">
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap-responsive.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/lightbox.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/redactor/css/redactor.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/vortex.css">
 	
 
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/jquery.min.js"></script>
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/less-1.3.0.min.js"></script>
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/bootstrap.js"></script>
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/redactor/redactor.js"></script>
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/lightbox.js"></script>	
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/app.js"></script>
@@ -20,7 +20,7 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
-<body>
+<body data-spy="scroll">
 	
 <div class="container">
     <div class="countdown right">
@@ -49,7 +49,8 @@
 
         </div>
     </a>
-	<div class="navbar">
+    <div class="clear"></div>
+	<div class="navbar navbar-inverse">
 		<div class="navbar-inner">
 			<div id="navbar-inner">
 				<?php $this->widget('zii.widgets.CMenu',array(
