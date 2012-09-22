@@ -1,20 +1,19 @@
 <?php
-/* @var $this RaidBossAbilityController */
-/* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Raid Boss Abilities',
+	'Способности рейдовых боссов',
 );
 
 $this->menu=array(
-	array('label'=>'Create RaidBossAbility', 'url'=>array('create')),
-	array('label'=>'Manage RaidBossAbility', 'url'=>array('admin')),
+	array('label'=>'Добавить способность босса', 'url'=>array('create')),
+	array('label'=>'Управлять способностями босса', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Raid Boss Abilities</h1>
+<h1>Способности рейдовых боссов</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
+    'template'=>"{items}\n{pager}",
 )); ?>

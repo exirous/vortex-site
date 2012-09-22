@@ -60,7 +60,7 @@ class RaidBossAbility extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'raidBoss' => array(self::BELONGS_TO, 'RaidBosses', 'raid_boss_id'),
+			'raidBoss' => array(self::BELONGS_TO, 'RaidBoss', 'raid_boss_id'),
 			'parent' => array(self::BELONGS_TO, 'RaidBossAbility', 'parent_id'),
 			'raidBossAbilities' => array(self::HAS_MANY, 'RaidBossAbility', 'parent_id'),
 		);

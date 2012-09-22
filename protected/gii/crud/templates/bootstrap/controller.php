@@ -1,9 +1,9 @@
-<?php
+<?php echo "<?php\n"; ?>
 
-class RaidBossAbilityController extends Controller
+class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseControllerClass."\n"; ?>
 {
-	public $layout='//layouts/column2';
 
+	public $layout='//layouts/column2';
 
 	public function filters()
 	{
@@ -24,16 +24,15 @@ class RaidBossAbilityController extends Controller
 				'actions'=>array('create','update'),
 				'roles'=>array('administrator'),
 			),
-			array('allow', //
-				'actions'=>array('admin','delete','getAbilities'),
+			array('allow',
+				'actions'=>array('admin','delete'),
 				'roles'=>array('administrator'),
 			),
-			array('deny',
+			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
 	}
-
 
 	public function actionView($id)
 	{
@@ -42,16 +41,15 @@ class RaidBossAbilityController extends Controller
 		));
 	}
 
-
 	public function actionCreate()
 	{
-		$model=new RaidBossAbility;
+		$model=new <?php echo $this->modelClass; ?>;
 
-		if(isset($_POST['RaidBossAbility']))
+		if(isset($_POST['<?php echo $this->modelClass; ?>']))
 		{
-			$model->attributes=$_POST['RaidBossAbility'];
+			$model->attributes=$_POST['<?php echo $this->modelClass; ?>'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('view','id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>));
 		}
 
 		$this->render('create',array(
@@ -63,11 +61,11 @@ class RaidBossAbilityController extends Controller
 	{
 		$model=$this->loadModel($id);
 
-		if(isset($_POST['RaidBossAbility']))
+		if(isset($_POST['<?php echo $this->modelClass; ?>']))
 		{
-			$model->attributes=$_POST['RaidBossAbility'];
+			$model->attributes=$_POST['<?php echo $this->modelClass; ?>'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('view','id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>));
 		}
 
 		$this->render('update',array(
@@ -85,7 +83,7 @@ class RaidBossAbilityController extends Controller
 
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('RaidBossAbility');
+		$dataProvider=new CActiveDataProvider('<?php echo $this->modelClass; ?>');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -93,10 +91,10 @@ class RaidBossAbilityController extends Controller
 
 	public function actionAdmin()
 	{
-		$model=new RaidBossAbility('search');
+		$model=new <?php echo $this->modelClass; ?>('search');
 		$model->unsetAttributes();
-		if(isset($_GET['RaidBossAbility']))
-			$model->attributes=$_GET['RaidBossAbility'];
+		if(isset($_GET['<?php echo $this->modelClass; ?>']))
+			$model->attributes=$_GET['<?php echo $this->modelClass; ?>'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -105,7 +103,7 @@ class RaidBossAbilityController extends Controller
 
 	public function loadModel($id)
 	{
-		$model=RaidBossAbility::model()->findByPk($id);
+		$model=<?php echo $this->modelClass; ?>::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -113,22 +111,10 @@ class RaidBossAbilityController extends Controller
 
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='raid-boss-ability-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='<?php echo $this->class2id($this->modelClass); ?>-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
-    public function actionGetAbilities()
-    {
-        $data=RaidBossAbility::model()->findAll('raid_boss_id=:raid_boss_id',
-            array(':raid_boss_id'=>(int) $_POST['RaidBossAbility']['raid_boss_id']));
-
-        $data=CHtml::listData($data,'id','name');
-        foreach($data as $value=>$name)
-        {
-            echo CHtml::tag('option',
-                array('value'=>$value),CHtml::encode($name),true);
-        }
-    }
 }

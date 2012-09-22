@@ -1,29 +1,20 @@
-<?php
-/* @var $this RaidBossAbilityController */
-/* @var $data RaidBossAbility */
-?>
-
 <div class="view">
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
-	<?php echo CHtml::encode($data->name); ?>
-	<br />
+    <?php echo CHtml::link(CHtml::encode($data->name), array('view', 'id'=>$data->id)); ?>
+    <br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('description')); ?>:</b>
 	<?php echo CHtml::encode($data->description); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('parent_id')); ?>:</b>
-	<?php echo CHtml::encode($data->parent_id); ?>
-	<br />
+    <?php if ($data->parent) {?>
+	    <b><?php echo CHtml::encode($data->getAttributeLabel('parent_id')); ?>:</b>
+
+        <?php echo CHtml::link(CHtml::encode($data->parent->name), array('view', 'id'=>$data->id)); ?>
+	    <br />
+    <?php } ?>
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('raid_boss_id')); ?>:</b>
-	<?php echo CHtml::encode($data->raid_boss_id); ?>
+    <?php echo CHtml::link(CHtml::encode($data->raidBoss->name), array('raidBoss/view', 'id'=>$data->id)); ?>
 	<br />
-
-
 </div>
+<hr/>

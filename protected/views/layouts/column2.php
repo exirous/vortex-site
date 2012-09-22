@@ -9,7 +9,27 @@
 		<?php echo $content; ?>
 	</div>
 </div>
-<div class="span4">	
+<div class="span4">
+
+<?php
+if(Yii::app()->user->checkAccess('administrator') && (count($this->menu) > 0)) {
+    ?>
+    <div class="box">
+        <h2>Операции</h2>
+        <div class="box_content">
+            <?php
+            $this->beginWidget('zii.widgets.CPortlet', array(
+            ));
+            $this->widget('zii.widgets.CMenu', array(
+                'items'=>$this->menu,
+            ));
+            $this->endWidget();
+            ?>
+        </div>
+    </div>
+    <?php
+}
+?>
 
 <?php 
 	if(Yii::app()->user->checkAccess('administrator')){
