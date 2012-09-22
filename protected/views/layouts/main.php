@@ -61,6 +61,7 @@
 						array('label'=>'Форум', 'url'=>'http://forum.vortex-guild.org/index.php'),
 						array('label'=>'Логи', 'url'=>'http://worldoflogs.com/guilds/99057/'),
 						array('label'=>'Прогресс', 'url'=>'http://wowprogress.com/guild/eu/Черный-Шрам/Вортекс/rating.tier13_25'),
+                        array('label'=>'Стримы', 'url'=>array('/stream')),
 						array('label'=>'Авторизация', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 						array('label'=>'Выйти ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 					),  

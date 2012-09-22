@@ -1,11 +1,8 @@
-<?php echo "<?php\n"; ?>
-
 <?php
-$label=$this->pluralize($this->class2name($this->modelClass));
-echo "\$this->breadcrumbs=array(
-	'$label',
-);\n";
-?>
+
+$this->breadcrumbs=array(
+	'Стримы',
+);
 
 $this->menu=array(
 	array('label'=>'Создать', 'url'=>array('create')),
@@ -13,9 +10,9 @@ $this->menu=array(
 );
 ?>
 
-<h1><?php echo $label; ?></h1>
+<h1>Стримы</h1>
 
-<?php echo "<?php"; ?> $this->widget('zii.widgets.CListView', array(
+<?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
     'template'=>"{items}\n{pager}",

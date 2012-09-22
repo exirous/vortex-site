@@ -1,4 +1,3 @@
-<?php echo "<?php\n"; ?>
 <div class="view">
 
 <?php
