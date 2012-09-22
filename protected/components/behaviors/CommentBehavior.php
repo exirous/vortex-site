@@ -13,7 +13,7 @@ class CommentBehavior extends CActiveRecordBehavior{
         $this->getOwner()->getMetaData()->addRelation('comments', array(CActiveRecord::BELONGS_TO, 'Comment', 'parent_id',
             'on'=>'comments.modelClassName="'.$this->modelClassName.'"'));
         $this->getOwner()->getMetaData()->addRelation('commentCount', array(CActiveRecord::STAT, 'Comment', 'parent_id',
-            'condition'=>'commentCount.modelClassName="'.$this->modelClassName.'"'));
+            'condition'=>'modelClassName="'.$this->modelClassName.'"'));
     }
 
     public function getCommentsProvider() {
