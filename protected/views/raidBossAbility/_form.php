@@ -36,10 +36,9 @@
         <?php echo $form->error($model,'raid_boss_id'); ?>
     </div>
 
-    CHtml::listData(RaidBossAbility::model()->findAll(), "id", "name")
 	<div>
 		<?php echo $form->labelEx($model,'parent_id'); ?>
-        <?php echo $form->dropDownList($model,'parent_id', array(), array('empty' => "Не задан", 'class'=>'input-xxlarge')); ?>
+        <?php echo $form->dropDownList($model,'parent_id', CHtml::listData(RaidBossAbility::model()->findAll("raid_boss_id=".$model->raid_boss_id), "id", "name"), array('empty' => "Не задан", 'class'=>'input-xxlarge')); ?>
 		<?php echo $form->error($model,'parent_id'); ?>
 	</div>
 	<div class="form-actions">

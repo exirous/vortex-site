@@ -125,6 +125,8 @@ class RaidBossAbilityController extends Controller
             array(':raid_boss_id'=>(int) $_POST['RaidBossAbility']['raid_boss_id']));
 
         $data=CHtml::listData($data,'id','name');
+
+        echo '<option value="">Не задан</option>)';
         foreach($data as $value=>$name)
         {
             echo CHtml::tag('option',
