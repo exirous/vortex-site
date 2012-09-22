@@ -15,6 +15,15 @@ class Post extends CActiveRecord
 		return 'posts';
 	}
 
+    public function behaviors(){
+        return array(
+            'CommentBehavior' => array(
+                'class' => 'application.components.behaviors.CommentBehavior',
+                'modelClassName' => 'Post',
+            )
+        );
+    }
+
 	public function rules()
 	{
 		return array(
@@ -32,8 +41,6 @@ class Post extends CActiveRecord
 	    return array(
 	        'author' => array(self::BELONGS_TO, 'Profile', 'author_id'),
 	        'blog' => array(self::BELONGS_TO, 'Blog', 'blog_id'),
-            'comments'=>array(self::HAS_MANY, 'Comment', 'post_id'),	
-            'commentCount'=>array(self::STAT, 'Comment', 'post_id'),        
 	    );
 	}
 
@@ -71,13 +78,6 @@ class Post extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-
-
-	public function addComment($comment)
-	{
-	    $comment->post_id = $this->id;
-	    return $comment->save();
-	}	
 
 	public function getThumbnail() {
 		return str_replace ( '/post' , '/post/thumbnail' , $this->post_image);

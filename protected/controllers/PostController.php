@@ -128,19 +128,8 @@ class PostController extends Controller
 	public function actionView()
 	{
 	    $post = $this->loadModel();
-    	$comment = $this->newComment($post);
-
-		$commentsProvider = new CActiveDataProvider('Comment',
-            array(
-    			'criteria'=>array(
-	    	        'condition'=>'post_id='.$post->id,
-		            'order'=>'created ASC'
-                ),
-                'pagination'=>array(
-                    'pageSize'=>100,
-                ),
-		    )
-        );
+    	$comment = $post->newComment($this);
+		$commentsProvider = $post->getCommentsProvider();
 
 	    $this->render('view', array(
 	        'model' => $post,
@@ -148,20 +137,6 @@ class PostController extends Controller
         	'commentsProvider' => $commentsProvider,	        
 	    ));
 	}
-
-	protected function newComment($post)
-	{
-	    $comment=new Comment;
-	    if(isset($_POST['Comment']))
-	    {
-	        $comment->attributes=$_POST['Comment'];
-	        if($post->addComment($comment))
-	        {
-	            $this->refresh();
-	        }
-	    }
-	    return $comment;
-	}	
 	 
 	public function loadModel()
 	{

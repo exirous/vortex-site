@@ -52,12 +52,16 @@ class RaidBossController extends Controller
 	public function actionView($id)
 	{
         $model = $this->loadModel($id);
+        $comment = $model->newComment($this);
+        $commentsProvider = $model->getCommentsProvider();
 
 		$this->render('view',array(
 			'model'=>$model,
             'response_video_beta'=>$this->getVideo($model->youtube_search." 25 normal beta"),
             'response_video'=>$this->getVideo($model->youtube_search." 25 normal"),
-		));
+            'comment' => $comment,
+            'commentsProvider' => $commentsProvider,
+        ));
 	}
 
     private function getVideo($q){

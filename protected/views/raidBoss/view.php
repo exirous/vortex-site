@@ -3,7 +3,7 @@
 /* @var $model RaidBoss */
 
 $this->breadcrumbs=array(
-	'Raid Bosses'=>array('index'),
+	'Рейдовые боссы'=>array('index'),
 	$model->name,
 );
 
@@ -21,6 +21,7 @@ $this->menu=array(
         <div class="span3">
             <div data-spy="affix" data-offset-top="300" style="top:20px">
                 <ul class="nav nav-list">
+                    <li><a href="#comments">Комментарии</a></li>
                     <li class="nav-header">Способности</li>
                     <?php
                     $display_menu = function ($ability){
@@ -53,6 +54,26 @@ $this->menu=array(
                 echo $raidRootBossAbility->withChilds($display_description, $display_description_childs);
             }
             ?>
+
+            <hr/>
+            <div class="post-comments" id="comments">
+                <a name="comments"></a>
+                <h3>Комментарии</h3>
+
+                <?php $this->widget('zii.widgets.CListView', array(
+                'dataProvider'=>$commentsProvider,
+                'itemView'=>'/comment/_view',
+                'template'=>"{items}",
+            )); ?>
+                <?php if (Yii::app()->user->id) { ?>
+                <h3>Оставить комментарий</h3>
+
+                <?php $this->renderPartial('/comment/_form', array(
+                    'model'=>$comment,
+                )); ?>
+                <?php } ?>
+
+            </div>
         </div>
         <div class="span3">
             <ul class="nav nav-list">

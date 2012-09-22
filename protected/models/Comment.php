@@ -18,7 +18,6 @@ class Comment extends CActiveRecord
 	{
 	    return array(	    	
 	        'author' => array(self::BELONGS_TO, 'Profile', 'author_id'),
-            'post'=>array(self::BELONGS_TO, 'Post', 'post_id'),	        
 	    );
 	}
 
@@ -28,7 +27,8 @@ class Comment extends CActiveRecord
 			'id' => 'ID',
 			'text' => 'Комментарий',
 			'author_id' => 'Автор',
-			'post_id' => 'Пост',
+            'modelClassName' => 'Модель',
+			'parent_id' => 'Ид объекта',
 			'created' => 'Создан',
 			'updated' => 'Обновлен',
 		);
