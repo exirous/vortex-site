@@ -1,7 +1,7 @@
 <?php
 
 $this->breadcrumbs=array(
-	'Стримы',
+	'Warcraft Class Specs',
 );
 
 $this->menu=array(
@@ -10,10 +10,10 @@ $this->menu=array(
 );
 ?>
 
-<h1>Стримы</h1>
+<h1>Warcraft Class Specs</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
-    'template'=>"{items}",
+    'template'=>"{items}\n{pager}",
 )); ?>

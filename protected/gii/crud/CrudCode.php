@@ -178,7 +178,7 @@ class CrudCode extends CCodeModel
 		if($column->type==='boolean')
 			return "CHtml::activeCheckBox(\$model,'{$column->name}')";
 		else if(stripos($column->dbType,'text')!==false)
-			return "CHtml::activeTextArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50, 'class'=>'input-xxlarge')))";
+			return "CHtml::activeTextArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50, 'class'=>'input-xxlarge'))";
 		else
 		{
 			if(preg_match('/^(password|pass|passwd|passcode)$/i',$column->name))
@@ -192,7 +192,7 @@ class CrudCode extends CCodeModel
 			{
 				if(($size=$maxLength=$column->size)>60)
 					$size=60;
-				return "CHtml::{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength, 'class'=>'input-xxlarge')))";
+				return "CHtml::{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength, 'class'=>'input-xxlarge'))";
 			}
 		}
 	}
@@ -207,7 +207,7 @@ class CrudCode extends CCodeModel
 		if($column->type==='boolean')
 			return "\$form->checkBox(\$model,'{$column->name}')";
 		else if(stripos($column->dbType,'text')!==false)
-			return "\$form->textArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50, 'class'=>'input-xxlarge')))";
+			return "\$form->textArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50, 'class'=>'input-xxlarge'))";
 		else
 		{
 			if(preg_match('/^(password|pass|passwd|passcode)$/i',$column->name))
@@ -221,7 +221,7 @@ class CrudCode extends CCodeModel
 			{
 				if(($size=$maxLength=$column->size)>60)
 					$size=60;
-				return "\$form->{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength, 'class'=>'input-xxlarge')))";
+				return "\$form->{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength, 'class'=>'input-xxlarge'))";
 			}
 		}
 	}

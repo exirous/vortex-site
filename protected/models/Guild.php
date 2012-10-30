@@ -2,6 +2,8 @@
 
 class Guild extends CActiveRecord
 {
+    private $ranks = array(0, 1, 3, 4, 8, 12);
+
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -10,7 +12,23 @@ class Guild extends CActiveRecord
 	public function tableName()
 	{
 		return 'guilds';
-	}	
+	}
+
+    public function relations()
+    {
+        return array(
+            'guildClassLeaders' => array(self::HAS_MANY, 'GuildClassLeader', 'guild_id'),
+            'characters' => array(self::HAS_MANY, 'Character', 'guild_id'),
+        );
+    }
+
+    public function scopes() {
+        return array(
+            'roster'=>array(
+                'condition'=>$this->ranks,
+            ),
+        );
+    }
 
 	public function attributeLabels()
 	{
@@ -64,21 +82,33 @@ class Guild extends CActiveRecord
 	{
 		$attributes = array('guild_id' => $guild_id);
 		$characters = Character::model()->findAllByAttributes($attributes);
-
-		$characters_db = array();
-		foreach($characters as $character)
-		{
-			$character_array =  array(
-				'name' =>  $character->name, 
-				'rank' =>  $character->rank_id, 
-				'thumbnail' => $character->thumbnail, 
-				'class' => $character->warcraft_class_id, 
-				'achievement_points'=> $character->achievement_points
-			);
-    		$characters_db[$character->id] = $character_array;
-		}	
-		return 	$characters_db;
+		return 	$characters;
 	}
+
+    public function getRoster($guild_id)
+    {
+        $attributes = array('guild_id' => $guild_id, 'rank_id' => $this->ranks);
+        $characters = Character::model()->findAllByAttributes($attributes);
+        return 	$characters;
+    }
+
+    public function getRosterByClassRole($class_role_id = null)
+    {
+        $attributes = array('guild_id' => $this->id, 'rank_id' => $this->ranks);
+        if ($class_role_id)
+            $characters = Character::model()->findAllByAttributes($attributes, array(
+                'with'=>'mainSpecRole',
+                'condition'=>'mainSpecRole.id='.$class_role_id,
+                'order'=>'t.rank_id ASC, t.warcraft_class_id ASC, t.name ASC'
+            ));
+        else
+            $characters = Character::model()->findAllByAttributes($attributes, array(
+                'with'=>'mainSpecRole',
+                'condition'=>'mainSpecRole.id IS NULL',
+                'order'=>'t.rank_id ASC, t.warcraft_class_id ASC, t.name ASC'
+            ));
+        return 	$characters;
+    }
 }
 
 ?>

@@ -11,10 +11,11 @@ class TeamSpeakOnline extends CPortlet
     protected function renderContent()
     {
     	$ts3 = Yii::app()->ts3;
-         
-    	$channels_clients = $ts3->ts3Server ? $ts3->onlineList(false) : false;
-        
-        $this->render('ts_online',array('onlineList'=>$channels_clients));
+        if($ts3) {
+    	    $channels_clients = $ts3->ts3Server ? $ts3->onlineList(false) : false;
+
+            $this->render('ts_online',array('onlineList'=>$channels_clients));
+        }
     }
 }
 

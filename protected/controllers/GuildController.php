@@ -14,7 +14,7 @@ class GuildController extends Controller
 	{
 		return array(
 			array('allow',  
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'roster'),
 				'users'=>array('*'),
 			),
 			array('allow', 
@@ -30,10 +30,17 @@ class GuildController extends Controller
 	public function actionView($id)
 	{
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-			'characters'=>Guild::model()->getCharacters($id)
+			'model'=>$this->loadModel($id)
 		));
 	}
+
+    public function actionRoster($id)
+    {
+        $guild = $this->loadModel($id);
+        $this->render('roster',array(
+            'model'=>$guild
+        ));
+    }
 
 	public function loadModel($id)
 	{

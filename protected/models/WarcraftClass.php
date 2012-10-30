@@ -16,6 +16,7 @@ class WarcraftClass extends CActiveRecord
     {
 	    return array(
             'characters'=>array(self::HAS_MANY, 'Character', 'warcraft_class_id'),
+            'classSpecs'=>array(self::HAS_MANY, 'WarcraftClassSpec', 'warcraft_class_id')
         );
 	}	
 

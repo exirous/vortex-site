@@ -13,6 +13,10 @@
     margin-top: 25px
 }
 
+.character_list_view>div {
+    margin: 10px;
+}
+
 .post-text {
 	text-align: justify;
 }
@@ -82,13 +86,13 @@ div:hover>div.actions {
     color: #fc7a09;    
 }
 .rogue {
-    color: #fcf166;    
+    color: #FFC324;
 }
 .mage {
     color: #57c6e4;    
 }
 .priest {
-    color: #333333;    
+    color: #555555;
 }
 .warlock {
     color: #837da1;    

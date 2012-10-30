@@ -17,7 +17,9 @@ class Character extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'ts3_normal_token' => 'TS3 token',
-			'ts3_admin_token' => 'TS3 admin token'
+			'ts3_admin_token' => 'TS3 admin token',
+            'main_spec_id' => 'Основной спек',
+            'off_spec_id' => 'Оффспек'
 		);
 	}
 
@@ -26,7 +28,10 @@ class Character extends CActiveRecord
         return array(
             'profile'=>array(self::BELONGS_TO, 'Profile', 'profile_id'),
             'warcraftClass'=>array(self::BELONGS_TO, 'WarcraftClass', 'warcraft_class_id'),
-            'rank'=>array(self::BELONGS_TO,'Rank','rank_id')
+            'rank'=>array(self::BELONGS_TO,'Rank','rank_id'),
+            'mainSpec'=>array(self::BELONGS_TO, 'WarcraftClassSpec', 'main_spec_id'),
+            'offSpec'=>array(self::BELONGS_TO, 'WarcraftClassSpec', 'off_spec_id'),
+            'mainSpecRole'=>array(self::HAS_ONE,'WarcraftClassRole',array('warcraft_class_role_id'=>'id'),'through'=>'mainSpec'),
         );
 	}
 

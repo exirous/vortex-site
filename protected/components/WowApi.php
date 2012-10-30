@@ -1,12 +1,7 @@
 <?php 
  
 class WowApi extends CApplicationComponent
-{	
-	public $ts3Server;
-    public $server_ip = '92.39.131.37';
-    public $server_port = '9987';
-    public $connectionString = 'serverquery://rusmaxim:ROqtf2of@92.39.131.37:10011/?server_port=9987';
-
+{
     public function init()
     {
     	parent::init();
