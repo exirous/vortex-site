@@ -53,6 +53,13 @@ class WowApi extends CApplicationComponent
         return  $character_api;
     }
 
+    public function getItem($id){
+        $request = "/item/".$id;
+        $item_api = $this->apiRequest($request);
+
+        return  $item_api;
+    }
+
     public function strtolower_utf8($string){
         $convert_to = array(
             "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",

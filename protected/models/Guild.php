@@ -78,16 +78,16 @@ class Guild extends CActiveRecord
 		return $this->findByAttributes($attributes);
 	}
 
-	public function getCharacters($guild_id)
+	public function getCharacters()
 	{
-		$attributes = array('guild_id' => $guild_id);
+		$attributes = array('guild_id' => $this->guild_id);
 		$characters = Character::model()->findAllByAttributes($attributes);
 		return 	$characters;
 	}
 
-    public function getRoster($guild_id)
+    public function getRoster()
     {
-        $attributes = array('guild_id' => $guild_id, 'rank_id' => $this->ranks);
+        $attributes = array('guild_id' => $this->id, 'rank_id' => $this->ranks);
         $characters = Character::model()->findAllByAttributes($attributes);
         return 	$characters;
     }

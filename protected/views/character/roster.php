@@ -1,10 +1,17 @@
 <div class="character_list_view" id="character_roster_<?=$data['id']?>">
     <div class="left">
-        <span class="<?php echo $data['warcraftClass']['english_name']; ?>">
+        <a href="<?=$this->createUrl('character/view',array('id'=>$data['id']));?>"><span class="<?php echo $data['warcraftClass']['english_name']; ?>">
             <?php echo $data['name']?>
-        </span>
+        </span></a>
         (<?php echo $data['warcraftClass']['name']?> -
         <span class="rank_<?php echo $data['rank']['id']?>"> <?php echo $data['rank']['name']?></span>)
+        <?
+        $itemSet = $data->getLastCharacterItemSet();
+        $itemSet->refresh();
+        if ($itemSet) {
+            echo("<span>GearScore:".$itemSet->gear_score.". ItemLevel: ".$itemSet->item_level."</span>");
+        }
+        ?>
     </div>
 
     <?php

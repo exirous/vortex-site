@@ -27,11 +27,14 @@ class Character extends CActiveRecord
     {
         return array(
             'profile'=>array(self::BELONGS_TO, 'Profile', 'profile_id'),
+            'realm'=>array(self::BELONGS_TO, 'Realm', 'realm_id'),
             'warcraftClass'=>array(self::BELONGS_TO, 'WarcraftClass', 'warcraft_class_id'),
             'rank'=>array(self::BELONGS_TO,'Rank','rank_id'),
             'mainSpec'=>array(self::BELONGS_TO, 'WarcraftClassSpec', 'main_spec_id'),
             'offSpec'=>array(self::BELONGS_TO, 'WarcraftClassSpec', 'off_spec_id'),
             'mainSpecRole'=>array(self::HAS_ONE,'WarcraftClassRole',array('warcraft_class_role_id'=>'id'),'through'=>'mainSpec'),
+            'characterItemSets'=>array(self::HAS_MANY, 'CharacterItemSet', 'character_id', 'order'=>'updated DESC'),
+            'lastCharacterItemSet'=>array(self::HAS_MANY, 'CharacterItemSet', 'character_id', 'order'=>'updated DESC', 'limit'=>1),
         );
 	}
 
@@ -93,6 +96,21 @@ class Character extends CActiveRecord
 		$character->save();
 		return $character;
 	}
+
+    public function apiLoadItems() {
+        $rawData = Yii::app()->wowapi->getCharacter($this->name, $this->realm->name, 'items');
+        $characterItemSet = new CharacterItemSet;
+        $characterItemSet->setAttributes(array('character_id'=>$this->id, 'item_level'=>$rawData->items->averageItemLevelEquipped, 'raw_data'=>json_encode($rawData->items), 'updated'=>new CDbExpression('NOW()')), false);
+        $characterItemSet->save(false);
+        $characterItemSet->refresh();
+    }
+
+    public function getLastCharacterItemSet() {
+        if (count($this->lastCharacterItemSet)) {
+            return $this->lastCharacterItemSet[0];
+        }
+        return false;
+    }
 
 	public function leaveGuild($character_id) {
 		$character = $this->findByPk($character_id);

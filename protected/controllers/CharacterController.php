@@ -18,10 +18,25 @@ class CharacterController extends Controller
                 'actions'=>array('changeSpec'),
                 'roles'=>array('administrator'),
             ),
+            array('allow',
+                'actions'=>array('LoadCharacterItems'),
+                'roles'=>array('member'),
+            ),
+            array('allow',
+                'actions'=>array('view'),
+                'users'=>array('*'),
+            ),
             array('deny',
                 'users'=>array('*'),
             ),
         );
+    }
+
+    public function actionView($id)
+    {
+        $this->render('view',array(
+            'model'=>$this->loadModel($id),
+        ));
     }
 
 	public function actionChangeSpec($id)
@@ -36,6 +51,11 @@ class CharacterController extends Controller
             'data'=>$model,
         ));
 	}
+
+    public function actionLoadCharacterItems($id){
+        $model = $this->loadModel($id);
+        $model->apiLoadItems();
+    }
 
     public function loadModel($id)
     {

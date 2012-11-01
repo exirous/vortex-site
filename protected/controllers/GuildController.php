@@ -21,6 +21,10 @@ class GuildController extends Controller
 				'actions'=>array(),
 				'users'=>array('@'),
 			),
+            array('allow',
+                'actions'=>array('updateItemsForRoster'),
+                'roles'=>array('administrator'),
+            ),
 			array('deny', 
 				'users'=>array('*'),
 			),
@@ -40,6 +44,17 @@ class GuildController extends Controller
         $this->render('roster',array(
             'model'=>$guild
         ));
+    }
+
+    public function actionUpdateItemsForRoster($id)
+    {
+        $guild = $this->loadModel($id);
+        $characters = $guild->getRoster($id);
+        foreach ($characters as $character) {
+            $character->apiLoadItems();
+        }
+
+        $this->redirect(array('roster', 'id' => $id));
     }
 
 	public function loadModel($id)
