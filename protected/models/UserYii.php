@@ -8,12 +8,12 @@
  * @property string $user_email
  * @property string $user_password
  */
-class User extends CActiveRecord
+class UserYii extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return User the static model class
+	 * @return UserYii the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

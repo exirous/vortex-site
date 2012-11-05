@@ -70,6 +70,14 @@ class LoginForm extends CFormModel
 		{
 			$duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
 			Yii::app()->user->login($this->_identity,$duration);
+
+            global $auth, $config_phpbb, $config;
+            $temp_config = $config;
+            $config = $config_phpbb;
+            ob_start();
+            $auth->login("ACTA", "R28M83wow", true);
+            ob_end_clean();
+            $config = $temp_config;
 			return true;
 		}
 		else

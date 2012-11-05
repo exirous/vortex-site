@@ -14,7 +14,7 @@ class UserIdentity extends CUserIdentity
 
     public function authenticate()
     {
-        $record=User::model()->findByAttributes(array('user_email'=>$this->username));
+        $record=UserYii::model()->findByAttributes(array('user_email'=>$this->username));
 
         if($record===null)
             $this->errorCode=self::ERROR_USERNAME_INVALID;
@@ -26,6 +26,20 @@ class UserIdentity extends CUserIdentity
             $this->setState('title', $record->username);
 
             $profile = Profile::model()->getOrCreateProfileByPhpbb($record->user_id);
+            $this->_profile_id = $profile->id;
+            $this->setState('profile_id', $profile->id);
+            $this->errorCode=self::ERROR_NONE;
+        }
+        return !$this->errorCode;
+    }
+
+    public function authinicateByPhpBB(){
+        global $user;
+        if ($user->data['user_id']>1) {
+            $this->_id = $user->data['user_id'];
+            $this->setState('title', $user->data['user_password']);
+
+            $profile = Profile::model()->getOrCreateProfileByPhpbb($this->_id);
             $this->_profile_id = $profile->id;
             $this->setState('profile_id', $profile->id);
             $this->errorCode=self::ERROR_NONE;
