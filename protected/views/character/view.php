@@ -18,11 +18,9 @@ if (count($model->lastCharacterItemSet)) {
 
     foreach ($slots as $item_key) {?>
         <li class="item_quality_<?=$lastCharacterItemSet->$item_key->quality?>">
-            <?=$lastCharacterItemSet->$item_key->name?>
-            <?
-                $item = Item::getItemById($lastCharacterItemSet->$item_key->id);
-                echo ($item->item_level);
-            ?>
+            <? $item = Item::getItemById($lastCharacterItemSet->$item_key->id);?>
+            <a href="#" rel="item=<?=$item->id?>;domain=ru"><?=$lastCharacterItemSet->$item_key->name?></a>
+            <?=$item->item_level;?>
         </li>
     <?}?>
     </ul>

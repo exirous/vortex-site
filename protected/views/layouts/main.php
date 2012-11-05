@@ -17,6 +17,9 @@
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/lightbox.js"></script>	
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/javascripts/app.js"></script>
 
+    <script type="text/javascript" src="http://static.wowhead.com/widgets/power.js"></script>
+    <script>var wowhead_tooltips = { "colorlinks": true, "iconizelinks": true, "renamelinks": true }</script>
+
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
