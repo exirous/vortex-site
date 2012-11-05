@@ -77,7 +77,7 @@ if(Yii::app()->user->checkAccess('administrator') && (count($this->menu) > 0)) {
         <h2>Ближайшие рейды</h2>
         <div class="box_content">
             <?php
-            $raids_events = RaidEvent::model()->findAll("event_datetime > '".MySQL::timestampToMySqlString(time())."' ORDER BY event_datetime ASC");
+            $raids_events = RaidEvent::model()->findAll("event_datetime > '".MySQL::timestampToMySqlString(time())."' ORDER BY event_datetime ASC LIMIT 5");
             foreach ($raids_events as $raid_event) {
                 echo CHtml::link($raid_event->title, array('raidEvent/view', 'id' => $raid_event->id)).'<br/>';
                 echo Yii::app()->dateFormatter->formatDateTime($raid_event->event_datetime, 'full', 'medium').'<br/>';
