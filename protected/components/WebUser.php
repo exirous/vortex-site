@@ -40,6 +40,14 @@ class WebUser extends CWebUser {
         }
     }
 
+    public function getUserId() {
+        if (isset($this->id)) {
+            return $this->id;
+        } else {
+            return false;
+        }
+    }
+
     public function isProfileId($profile_id) {
         return (isset($this->profile_id) && ($this->profile_id == $profile_id));
     }

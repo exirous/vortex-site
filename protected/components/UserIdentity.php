@@ -37,7 +37,7 @@ class UserIdentity extends CUserIdentity
         global $user;
         if ($user->data['user_id']>1) {
             $this->_id = $user->data['user_id'];
-            $this->setState('title', $user->data['user_password']);
+            $this->setState('title', $user->data['user_name']);
 
             $profile = Profile::model()->getOrCreateProfileByPhpbb($this->_id);
             $this->_profile_id = $profile->id;

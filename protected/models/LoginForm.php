@@ -75,7 +75,8 @@ class LoginForm extends CFormModel
             $temp_config = $config;
             $config = $config_phpbb;
             ob_start();
-            $auth->login("ACTA", "R28M83wow", true);
+            $userYii = UserYii::model()->findByAttributes(array('user_id'=>$this->_identity->getId()));
+            $auth->login($userYii->username, $this->password, true);
             ob_end_clean();
             $config = $temp_config;
 			return true;
