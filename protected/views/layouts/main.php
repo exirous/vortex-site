@@ -26,14 +26,6 @@
 <body data-spy="scroll">
 	
 <div class="container">
-    <div class="countdown right">
-        <h2>Туманы Пандарии</h2>
-        <?php $this->widget('ext.kwcountdown.KWCountdown', array('until_seconds' => strtotime("25-09-2012"),
-            'element_id' => 'countdown1', 'options' => array('format' => 'WdHM'))); ?>
-        <h2>Подземелья Магу'шан</h2>
-        <?php $this->widget('ext.kwcountdown.KWCountdown', array('until_seconds' => strtotime("03-10-2012 20:30:00"),
-            'element_id' => 'countdown2', 'options' => array('format' => 'WdHM'))); ?>
-    </div>
     <?php if (!Yii::app()->user->isGuest) {?>
     <dl id="profile_info" class="right">
         <dt>E-mail</dt>
