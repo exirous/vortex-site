@@ -56,6 +56,20 @@ if(Yii::app()->user->checkAccess('administrator') && (count($this->menu) > 0)) {
     }
 ?>
 
+<?php if(Yii::app()->user->checkAccess('member')){ ?>
+<div class="box">
+    <h2>Важно</h2>
+    <ul>
+    <div class="box_content">
+        <?php
+            $posts = Post::model()->findAllByAttributes(array('blog_id' => 16));
+            $this->renderPartial('/post/list', array('posts' => $posts));
+        ?>
+    </div>
+    </ul>
+</div>
+<?php } ?>
+
 <?php 
 	$this->blogMenu[] = array('label'=>'Список блогов', 'url'=>array('blog/index'));
 ?>

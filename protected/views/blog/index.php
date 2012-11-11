@@ -13,5 +13,5 @@ if (Yii::app()->user->checkAccess('raider')) {
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
-	'template'=>"{items}",
+	'template'=>"{items}\n{pager}",
 )); ?>
