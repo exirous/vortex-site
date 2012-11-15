@@ -72,6 +72,8 @@ class Character extends CActiveRecord
  		if (!$character) $character = new Character;
 		$character->setAttributes($character_attributes, false);
 	    $character->save();
+
+        return $character;
 	}
 
 	public function apiLoad($character_api, $realm_id)

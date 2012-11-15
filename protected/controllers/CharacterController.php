@@ -34,6 +34,9 @@ class CharacterController extends Controller
 
     public function actionView($id)
     {
+        if(Yii::app()->user->checkAccess('member')){
+            $this->operationMenu[] = array('label'=>'Обновить персонажа', 'url'=>array('character/LoadCharacterItems', 'id' => $id));
+        }
         $this->render('view',array(
             'model'=>$this->loadModel($id),
         ));
@@ -55,6 +58,7 @@ class CharacterController extends Controller
     public function actionLoadCharacterItems($id){
         $model = $this->loadModel($id);
         $model->apiLoadItems();
+        $this->redirect(array('character/view', 'id'=>$id));
     }
 
     public function loadModel($id)

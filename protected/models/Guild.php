@@ -19,6 +19,7 @@ class Guild extends CActiveRecord
         return array(
             'guildClassLeaders' => array(self::HAS_MANY, 'GuildClassLeader', 'guild_id'),
             'characters' => array(self::HAS_MANY, 'Character', 'guild_id'),
+            'realm' => array(self::BELONGS_TO, 'Realm', 'realm_id')
         );
     }
 
@@ -51,8 +52,8 @@ class Guild extends CActiveRecord
         foreach ($guild_api->members as $member) {
             $character = $member->character;
             $rank = $member->rank;
-            Character::model()->apiLoadFromGuild($character, $rank, $guild->id, $realm->id); 
-            
+            Character::model()->apiLoadFromGuild($character, $rank, $guild->id, $realm->id);
+
             array_push($characters_api, $member->character->name);
         }
 
@@ -108,6 +109,12 @@ class Guild extends CActiveRecord
                 'order'=>'t.rank_id ASC, t.warcraft_class_id ASC, t.name ASC'
             ));
         return 	$characters;
+    }
+
+    public function getFullName($include_id = false) {
+        $fullName = $this->name." - ".$this->realm->name;
+        if ($include_id) $fullName .= " (".$this->id.")";
+        return $fullName;
     }
 }
 

@@ -32,15 +32,10 @@ if(Yii::app()->user->checkAccess('administrator') && (count($this->menu) > 0)) {
 ?>
 
 <?php 
-	if(Yii::app()->user->checkAccess('administrator')){
-		$this->operationMenu[] = array('label'=>'Загрузить список игровых миров', 'url'=>array('wowapi/RealmsLoad'));
-		$this->operationMenu[] = array('label'=>'Загрузить гильдию Вортекс', 'url'=>array('wowapi/GuildLoad'));
-		$this->operationMenu[] = array('label'=>'Обработать TeamSpeak3', 'url'=>array('site/TeamSpeakMaintance'));
-        $this->operationMenu[] = array('label'=>'Заполнить список рейдов', 'url'=>array('raidSchedule/generate'));
-		$this->operationMenu[] = array('label'=>'Список профилей', 'url'=>array('profile/list'));
+	if(count ($this->operationMenu)){
 ?>
 	<div class="box">
-		<h2>Администрирование</h2>
+		<h2>Операции</h2>
 		<div class="box_content">
 		<?php
 			$this->beginWidget('zii.widgets.CPortlet', array(

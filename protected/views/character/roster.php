@@ -7,8 +7,8 @@
         <span class="rank_<?php echo $data['rank']['id']?>"> <?php echo $data['rank']['name']?></span>)
         <?
         $itemSet = $data->getLastCharacterItemSet();
-        $itemSet->refresh();
         if ($itemSet) {
+            $itemSet->refresh();
             echo("<span>GearScore:".$itemSet->gear_score.". ItemLevel: ".$itemSet->item_level."</span>");
         }
         ?>
