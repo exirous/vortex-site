@@ -53,7 +53,7 @@ class CharacterItemSet extends CActiveRecord
 
         $slots = array();
         foreach ($lastCharacterItemSet as $item_key => $item) {
-            if (!(($item_key == 'averageItemLevel') or ($item_key == 'averageItemLevelEquipped') or ($item_key == 'shirt'))) {
+            if (!(($item_key == 'averageItemLevel') or ($item_key == 'averageItemLevelEquipped') or ($item_key == 'shirt') or ($item_key == 'tabard'))) {
                 $slots[] = $item_key;
             }
         }
